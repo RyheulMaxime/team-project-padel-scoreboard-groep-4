@@ -1,0 +1,505 @@
+/*------------------------------------*\
+#FONTS
+\*------------------------------------*/
+
+/* @font-face {
+    font-family: "Work sans Web";
+    font-weight: 400;
+    src: url("../fonts/work-sans-v11-latin-regular.woff2") format("woff2")
+}
+
+@font-face {
+    font-family: "Work sans Web";
+    font-weight: 700;
+    src: url("../fonts/work-sans-v11-latin-700.woff2") format("woff2")
+} */
+
+/*------------------------------------*\
+#Variables
+\*------------------------------------*/
+
+:root {
+    /* colors */
+    --color-light:#D4E2FA;
+    --color-dark:#0F3557;
+    
+
+    --color-front: var(--color-dark);
+    --color-back: var(--color-light);
+
+    --color-sun: var(--color-dark);
+
+    /* opacity */
+    --global-opacity:60%;
+
+    /* transitions */
+    /* --local-sun-position-left: 60%;
+    --local-sun-position-bottom:40%; */
+
+}
+
+
+
+/*------------------------------------*\
+#GENERIC
+\*------------------------------------*/
+
+/*
+    Generic: Page
+    ---
+    Global page styles + universal box-sizing:
+*/
+
+html {
+    font-size: 16px;
+    line-height: 1.5;
+    /* font-family: Helvetica, arial, sans-serif; */
+    font-family: "Work Sans", Helvetica;
+    /* font-family: "Work sans Web", Helvetica; */
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-front);
+    background-color: var(--color-back);
+    font-feature-settings: "zero" 1;
+    height: 100%;
+}
+
+
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/*
+* Remove text-shadow in selection highlight:
+* https://twitter.com/miketaylr/status/12228805301
+*
+* Customize the background color to match your design.
+*/
+
+::-moz-selection {
+    background: red;
+    color: white;
+    text-shadow: none;
+}
+
+::selection {
+    background: red;
+    color: white;
+    text-shadow: none;
+}
+
+/*------------------------------------*\
+#Elements
+\*------------------------------------*/
+
+/*
+Elements: Images
+---
+Default markup for images to make them responsive
+*/
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+/*
+    Elements: typography
+    ---
+    Default markup for typographic elements
+*/
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 36px;
+    line-height: 48px;
+    margin: 0 0 24px;
+}
+
+h2 {
+    font-size: 32px;
+    line-height: 40px;
+    margin: 0 0 24px;
+}
+
+h3 {
+    font-size: 26px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+h4,
+h5,
+h6 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    margin: 0 0 24px;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+    margin: 0 0 24px;
+    
+}
+
+ul,
+ol {
+    padding-left: 24px;
+}
+
+li ul,
+li ol {
+    margin-bottom: 0;
+}
+
+blockquote {
+    font-style: normal;
+    font-size: 23px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+blockquote * {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+figcaption {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 8px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: LightGrey;
+    margin: 0 0 24px;
+}
+
+a {
+    color: red;
+    outline-color: red;
+    outline-width: medium;
+    outline-offset: 2px;
+}
+
+a:visited,
+a:active {
+    color: red;
+}
+
+a:hover,
+a:focus {
+    color: red;
+}
+
+label,
+input {
+    display: block;
+}
+
+select {
+    width: 100%;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+/*------------------------------------*\
+#OBJECTS
+\*------------------------------------*/
+
+/*
+    Object: Button reset
+    ---
+    Small button reset object
+*/
+
+.o-button-reset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+
+    /* inherit font & color from ancestor */
+    color: inherit;
+    font: inherit;
+
+    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+    line-height: normal;
+
+    /* Corrects font smoothing for webkit */
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+
+    /* Corrects inability to style clickable `input` types in iOS */
+    -webkit-appearance: none;
+}
+
+/*
+    Object: Hide accessible
+    ---
+    Accessibly hide any element
+*/
+
+.o-hide-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/*------------------------------------*\
+#COMPONENTS
+\*------------------------------------*/
+
+/*
+    Component: Logo
+    ---
+    Website main logo
+*/
+
+.c-logo {
+    display: flex;
+    align-items: center;
+    /* gap: 8px; */
+    
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 32px;
+}
+
+/*
+    Component: Sun
+    ---
+    The sun
+*/
+
+.c-sun {
+    fill: var(--color-sun);
+    max-width: 22px;
+    max-height: 22px;
+}
+
+.c-logo .c-sun {
+    margin-right: 8px;
+
+}
+
+
+/*
+    Component: App
+    ---
+    Main app wrapper
+*/
+
+.c-main{
+    display: flex;
+    justify-content: center;
+}
+
+.c-app{
+    max-width: 400px;
+    padding: 32px;
+    /* height: 100%; */
+    display: flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+    
+    min-height: 100vh;
+}
+
+.c-app__summary{
+    
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 40px;
+    
+}
+
+/*
+    Component: Horizon
+    ---
+    Horizon with sun visualisation
+*/
+
+.c-horizon{
+    margin-top: auto;
+}
+
+.c-horizon__line{
+    border-top: 1px solid var(--color-front);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+.c-horizon__time{
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.c-horizon__sky-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    padding-top: 22px;
+    padding-right: 40px;
+}
+
+.c-horizon__sky {
+    position: relative;
+    height: 100%;
+    
+}
+
+.c-horizon__sun::before{
+    content: attr(data-time); 
+    font-size: 12px;
+    line-height: 14px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.c-horizon__sun {
+    /* --local-sun-position-left:60%;
+    --local-sun-position-bottom:40%; */
+
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    transform: translateY(22px);
+    left: var(--local-sun-position-left);
+    bottom: var(--local-sun-position-bottom);
+}
+
+
+
+/*------------------------------------*\
+#UTILITIES
+\*------------------------------------*/
+
+/*
+    Utilities: Mute
+    Mute with opacity
+*/
+
+.u-muted{
+    opacity: var(--global-opacity);
+}
+
+/*------------------------------------*\
+#STATES
+\*------------------------------------*/
+
+/*
+    Change the theme using CSS vars.
+*/
+
+/* Night version: just switch the light and dark vars */
+
+/*------------------------------------*\
+#MEDIA
+\*------------------------------------*/
+
+/*
+    Print styles.
+    ---
+    Inlined to avoid the additional HTTP request:
+    http://www.phpied.com/delay-loading-your-print-css/
+*/
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        /* Black prints faster:
+        http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    /*
+    * Don't show links that are fragment identifiers,
+    * or use the `javascript:` pseudo protocol
+    */
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
+    * Printing Tables:
+    * http://css-discuss.incutio.com/wiki/Printing_Tables
+    */
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+
+.is-night {
+    --color-front: var(--color-light);
+    --color-back: var(--color-dark);
+    --color-sun: var(--color-light);
+ }
