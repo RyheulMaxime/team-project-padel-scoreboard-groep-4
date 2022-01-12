@@ -8,6 +8,8 @@ TTGOClass *ttgo;
   static uint32_t i = 0;
   if (event == LV_EVENT_CLICKED) {
     printf("ROOD\n");
+        ttgo->motor->onec();
+        delay(100);
   }
 } 
 void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
@@ -15,6 +17,8 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
   static uint32_t i = 0;
   if (event == LV_EVENT_CLICKED) {
     printf("BLAUW\n");
+        ttgo->motor->onec();
+        delay(100);
   }
 }
 
@@ -25,6 +29,7 @@ void setup()
   ttgo->begin();
   ttgo->openBL();
   ttgo->lvgl_begin();
+  ttgo->motor_begin();
 
   lv_obj_t *label;
 //btn 1
