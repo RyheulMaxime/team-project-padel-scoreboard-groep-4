@@ -3,7 +3,8 @@
 
 TTGOClass *ttgo;
 char incomingString;
-
+String kleur;
+int totalPoints;
 
 void setup()
 {
@@ -26,7 +27,13 @@ void loop()
   if (Serial.available() > 0) {
     // read the incoming byte:
     incomingString = Serial.read();
-    switch (incomingString){
+    Serial.println(incomingString);
+    
+  }
+  if (totalPoints == 3){
+    incomingString = '1';
+  }
+  switch (incomingString){
       case '1':
       startStyle();
       break;
@@ -40,10 +47,11 @@ void loop()
       chooseTeam();
       break;
     }
-  }
+  
   
   delay(5);
 }
+// STYLES ----------------------------------------------------------------------------------------------------
 void chooseTeam(){
   whiteScreen();
    lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
@@ -53,7 +61,7 @@ void chooseTeam(){
     //btn 1
     lv_obj_t *label;
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
-  //lv_obj_set_event_cb(btn1, event_handlerBLAUW);
+  lv_obj_set_event_cb(btn1, teamBlauw);
   lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 10, 0);
   //label btn1
   label = lv_label_create(btn1, NULL);
@@ -72,7 +80,7 @@ void chooseTeam(){
 
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
-  //lv_obj_set_event_cb(btn2, event_handlerROOD);
+  lv_obj_set_event_cb(btn2, teamRood);
   lv_obj_align(btn2, NULL,  LV_ALIGN_IN_RIGHT_MID , 15, 0);
   //label btn2
   label = lv_label_create(btn2, NULL);
@@ -95,7 +103,7 @@ void startStyle(){
   whiteScreen();
     lv_obj_t *label;
   lv_obj_t *btnStartGame = lv_btn_create(lv_scr_act(), NULL);
-  //lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
+  lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
   lv_obj_align(btnStartGame, NULL,  LV_ALIGN_CENTER, 0, 0);
   label = lv_label_create(btnStartGame, NULL);
   lv_label_set_text(label, "START GAME");
@@ -160,8 +168,39 @@ void gameStyle(){
 
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
+  
 }
-
+//EVENT HANDLERS ------------------------------------------------------------------------------------------
+void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
+{
+  if (event == LV_EVENT_CLICKED)
+  {
+    printf("START GAME\n");
+    ttgo->motor->onec();
+    delay(100);
+    incomingString = '4';
+  }
+}
+void teamRood(lv_obj_t *obj, lv_event_t event)
+{
+  if (event == LV_EVENT_CLICKED)
+  {
+    printf("TEAM ROOD\n");
+    ttgo->motor->onec();
+    delay(100);
+    incomingString = '2';
+  }
+}
+void teamBlauw(lv_obj_t *obj, lv_event_t event)
+{
+  if (event == LV_EVENT_CLICKED)
+  {
+    printf("TEAM BLAUW\n");
+    ttgo->motor->onec();
+    delay(100);
+    incomingString = '2';
+  }
+}
 void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
 {
   static uint32_t i = 0;
@@ -194,6 +233,7 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
     printf("PUNT BLAUW\n");
     ttgo->motor->onec();
     delay(100);
+    totalPoints +=1;
     i = 0;
   }
   if ( (event == LV_EVENT_CLICKED) && (i >= 30)) {
