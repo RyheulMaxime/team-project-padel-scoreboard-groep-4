@@ -20,12 +20,14 @@
 
 :root {
     /* colors */
-    --color-light:#D4E2FA;
-    --color-dark:#0F3557;
+    --global-color-alpha:#D4E2FA;
+    --global-color-alpha-dark:#021433; 
+    --global-color-alpha-light:#F0F4FC; 
+
     
 
-    --color-front: var(--color-dark);
-    --color-back: var(--color-light);
+    --color-front: var(--global-color-alpha-dark);
+    --color-back: var(--global-color-alpha);
 
     --color-sun: var(--color-dark);
 
@@ -51,7 +53,7 @@
 */
 
 html {
-    font-size: 16px;
+    font-size: 100%;
     line-height: 1.5;
     /* font-family: Helvetica, arial, sans-serif; */
     font-family: "Work Sans", Helvetica;
@@ -277,144 +279,125 @@ input::placeholder {
 #COMPONENTS
 \*------------------------------------*/
 
-/*
-    Component: Logo
-    ---
-    Website main logo
-*/
-
-.c-logo {
-    display: flex;
-    align-items: center;
-    /* gap: 8px; */
-    
-    line-height: 16px;
-    font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 32px;
-}
-
-/*
-    Component: Sun
-    ---
-    The sun
-*/
-
-.c-sun {
-    fill: var(--color-sun);
-    max-width: 22px;
-    max-height: 22px;
-}
-
-.c-logo .c-sun {
-    margin-right: 8px;
-
-}
 
 
 /*
-    Component: App
+    Component: background
     ---
-    Main app wrapper
+    Website main background
 */
 
-.c-main{
-    display: flex;
-    justify-content: center;
+.c-achtergrond{
+    /* position: relative; */
+    z-index: 1;
+    position:absolute;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+    width: 100%;
 }
 
-.c-app{
-    max-width: 400px;
-    padding: 32px;
-    /* height: 100%; */
-    display: flex;
-    /* justify-content: space-between; */
-    flex-direction: column;
-    
-    min-height: 100vh;
-}
-
-.c-app__summary{
-    
-    font-size: 28px;
-    font-weight: 400;
-    line-height: 40px;
-    
-}
-
-/*
-    Component: Horizon
-    ---
-    Horizon with sun visualisation
-*/
-
-.c-horizon{
-    margin-top: auto;
-}
-
-.c-horizon__line{
-    border-top: 1px solid var(--color-front);
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 32px;
-}
-
-.c-horizon__time{
-    font-size: 12px;
-    line-height: 14px;
-}
-
-.c-horizon__sky-wrapper {
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-    padding-top: 22px;
-    padding-right: 40px;
-}
-
-.c-horizon__sky {
-    position: relative;
-    height: 100%;
-    
-}
-
-.c-horizon__sun::before{
-    content: attr(data-time); 
-    font-size: 12px;
-    line-height: 14px;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.c-horizon__sun {
-    /* --local-sun-position-left:60%;
-    --local-sun-position-bottom:40%; */
-
+.c-achtergrond-mid{
     position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    width: 40px;
-    transform: translateY(22px);
-    left: var(--local-sun-position-left);
-    bottom: var(--local-sun-position-bottom);
 }
 
+.c-achtergrond-mid-blauw{
+    height: 95%;
+    width: 35%;
+}
 
+.c-achtergrond-rood{
+    height: 95%;
+    width: 100%;
+}
+
+.c-achtergrond-blauw{
+    height: 95%;
+    width: 100%;
+}
+
+/*
+    Component: scoreboard
+    ---
+    Website main scoreboard
+*/
+
+.c-scoreboard{
+    width: 100%;
+    height: 90vh;
+    position: absolute;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.c-scoreboard-blue{
+    justify-content: flex-end;
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+}
+
+.c-scoreboard-mid{
+    /* display: flex; */
+    justify-content: center;
+    color: var(--global-color-alpha-light);
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+}
+
+.c-scoreboard-mid__logo{
+    justify-self: center;
+    align-self: center;
+}
+
+.c-scoreboard-mid-tekst{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+}
+
+.c-scoreboard-red{
+    justify-content: start;
+    
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+}
+
+.c-scoreboard-team{
+    justify-self: center;
+    align-self: center;
+    font-size: 4rem;
+}
+
+.c-scoreboard-opslag{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.c-scoreboard-point{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+}
+
+.c-scoreboard-point__punten{
+    justify-self: center;
+    align-self: center;
+    font-size: 5rem;
+}
 
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
 
-/*
-    Utilities: Mute
-    Mute with opacity
-*/
 
-.u-muted{
-    opacity: var(--global-opacity);
-}
 
 /*------------------------------------*\
 #STATES
