@@ -23,6 +23,8 @@
     --global-color-alpha:#D4E2FA;
     --global-color-alpha-dark:#021433; 
     --global-color-alpha-light:#F0F4FC; 
+    
+    --global-color-alpha-light-border:#BAD0F7; 
 
     
 
@@ -496,12 +498,44 @@ input::placeholder {
     margin: 0;
     font-size: 4rem;
 }
+
 .c-scoreboard-set-item{
     grid-row: 3;
     justify-self: center;
     margin: 0;
     font-size: 5rem;
     font-weight: 600;
+}
+
+/*
+    Component: info
+    ---
+    Website main info
+*/
+
+.c-info{
+    height: 40vh;
+    transform: translateY(140%);
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    /* justify-content: center; */
+    /* margin: 2rem; */
+}
+
+.c-info-sponsor{
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: calc(1rem);
+}
+
+.c-info-melding{
+    justify-self: center;
+    font-size: 3rem;
+    border: calc(1rem/4) solid var(--global-color-alpha-dark);
+    padding: calc(1rem/2);
+    background-color: var(--global-color-alpha-light-border);
+    width: 80%;
 }
 
 /*------------------------------------*\

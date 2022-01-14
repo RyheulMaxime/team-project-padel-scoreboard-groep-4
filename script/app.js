@@ -5,21 +5,25 @@ var elem = document.documentElement;
 
 
 const listenToUI = function(){
-    socket.on('connect', function(){
-        console.log(`verbonden met socket webserver`);
-    });
+   
 };
 
 const listenToSocket = function(){
+    socket.on('connect', function(){
+        console.log(`verbonden met socket webserver`);
+        // document.querySelector(".js-button").click();
+        // window.scrollTo(0,1);
+    });
+
     
 };
 
-function goFullscreen() {
-    // Must be called as a result of user interaction to work
-    mf = document.querySelector("main_frame");
-    mf.webkitRequestFullscreen();
-    mf.style.display="";
-}
+// function goFullscreen() {
+//     // Must be called as a result of user interaction to work
+//     mf = document.querySelector("main_frame");
+//     mf.webkitRequestFullscreen();
+//     mf.style.display="";
+// }
 
 // function fullscreenChanged() {
 //     if (document.webkitFullscreenElement == null) {
@@ -32,17 +36,17 @@ function goFullscreen() {
 // document.documentElement.onclick = goFullscreen;
 // document.onkeydown = goFullscreen;
 
-function openFullscreen() {
-    console.log("test fullscreen");
-    if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-    console.log("fullscreen");
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
-    elem.msRequestFullscreen();
-  }
-}
+// function openFullscreen() {
+//     console.log("test fullscreen");
+//     if (elem.requestFullscreen) {
+//     elem.requestFullscreen();
+//     console.log("fullscreen");
+//   } else if (elem.webkitRequestFullscreen) { /* Safari */
+//     elem.webkitRequestFullscreen();
+//   } else if (elem.msRequestFullscreen) { /* IE11 */
+//     elem.msRequestFullscreen();
+//   }
+// }
 
 // const init = function(){
 //     const teamBlue = document.querySelector(".js-team-blue");
@@ -53,6 +57,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // init();
     listenToUI();
     listenToSocket();
-    openFullscreen();
 
 });
