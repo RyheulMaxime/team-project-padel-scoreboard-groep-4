@@ -15,6 +15,16 @@ const listenToSocket = function(){
         // window.scrollTo(0,1);
     });
 
+    socket.on('B2F_verandering_punten', function(jsonObject){
+        // console.log(`verbonden met socket webserver`);
+        rood = document.querySelector(".js-point-red");
+        blauw = document.querySelector(".js-point-blue");
+        console.log("item binnen gekregen")
+        console.log(jsonObject);
+        rood.innerHTML = jsonObject.red;
+        blauw.innerHTML = jsonObject.blue;
+    });
+
     
 };
 
