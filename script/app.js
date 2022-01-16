@@ -56,6 +56,16 @@ const listenToSocket = function(){
         set_rood.innerHTML = jsonObject.red;
         set_blauw.innerHTML = jsonObject.blue;
     });
+    
+    socket.on('B2F_tiebrake', function(){
+        scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
+        scoreboardPuntenHeader.innerHTML = "Tiebrake";
+    });
+    
+    socket.on('B2F_punten', function(){
+        scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
+        scoreboardPuntenHeader.innerHTML = "Punten";
+    });
 
     
 };
