@@ -1,12 +1,7 @@
-// const mqtt = require('mqtt')
-// const client = mqtt.connect('192.168.10.10')
-// client.on('connect', () => {
-//   console.log("it is alive")
-// })
 
 // console.log(location.hostname)
 // Create a client instance
-var client = new Paho.MQTT.Client('172.30.248.57', 1883 ,'javascript');
+var client = new Paho.MQTT.Client('127.0.0.1', 8080, 'javascript');
 // var client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
 
 // set callback handlers

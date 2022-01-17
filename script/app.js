@@ -1,69 +1,130 @@
-const lanIP = `${window.location.hostname}:5000`;
-const socket = io(`http://${lanIP}`);
+// const lanIP = `${window.location.hostname}:5000`;
+// const socket = io(`http://${lanIP}`);
 var elem = document.documentElement;
 
+
+
+// mqtt ******************************************************************************************************
+var client = new Paho.MQTT.Client('127.0.0.1', 8080, 'javascript');
+// var client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
+
+// set callback handlers
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+
+// connect the client
+client.connect({onSuccess:onConnect});
+
+
+// called when the client connects
+function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+  console.log("onConnect");
+  client.subscribe("/scorebord1");
+//   message = new Paho.MQTT.Message("Hello");
+//   message.destinationName = "/scorebord1";
+//   client.send(message);
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:"+responseObject.errorMessage);
+  }
+}
+
+// called when a message arrives
+function onMessageArrived(message) {
+  console.log(message.payloadString);
+  var json = JSON.parse(message.payloadString);
+  console.log(json);
+  if (json.type == "opslag"){
+    choseSide(json.side);
+  };
+
+}
+
+
+const choseSide = function(kleur){
+    opslag_blauw = document.querySelector(".js-opslag-blue");
+    opslag_rood = document.querySelector(".js-opslag-red");
+    if(kleur == "blauw"){
+        opslag_blauw.innerHTML = "R";
+        opslag_rood.innerHTML = "";
+    }else if(kleur == "rood"){
+        opslag_blauw.innerHTML = "";
+        opslag_rood.innerHTML = "R";
+    }else{
+        console.log("iets fout in choseSide")
+    };
+    
+}
+
+// socket ******************************************************************************
 const listenToUI = function(){
    
 };
 
+
+
 const listenToSocket = function(){
-    socket.on('connect', function(){
-        console.log(`verbonden met socket webserver`);
-        // document.querySelector(".js-button").click();
-        // window.scrollTo(0,1);
-    });
+    // socket.on('connect', function(){
+    //     console.log(`verbonden met socket webserver`);
+    //     // document.querySelector(".js-button").click();
+    //     // window.scrollTo(0,1);
+    // });
 
-    socket.on('B2F_verandering_punten', function(jsonObject){
-        // console.log(`verbonden met socket webserver`);
-        rood = document.querySelector(".js-point-red");
-        blauw = document.querySelector(".js-point-blue");
+    // socket.on('B2F_verandering_punten', function(jsonObject){
+    //     // console.log(`verbonden met socket webserver`);
+    //     rood = document.querySelector(".js-point-red");
+    //     blauw = document.querySelector(".js-point-blue");
         
-        opslag_blauw = document.querySelector(".js-opslag-blue");
-        opslag_rood = document.querySelector(".js-opslag-red");
+    //     opslag_blauw = document.querySelector(".js-opslag-blue");
+    //     opslag_rood = document.querySelector(".js-opslag-red");
 
-        console.log("item binnen gekregen")
-        console.log(jsonObject);
-        rood.innerHTML = jsonObject.red;
-        blauw.innerHTML = jsonObject.blue;
+    //     console.log("item binnen gekregen")
+    //     console.log(jsonObject);
+    //     rood.innerHTML = jsonObject.red;
+    //     blauw.innerHTML = jsonObject.blue;
 
-        if(opslag_blauw.innerHTML == "R"){
-            opslag_blauw.innerHTML = "";
-            opslag_rood.innerHTML = "R";
-        }else{
-            opslag_blauw.innerHTML = "R";
-            opslag_rood.innerHTML = "";
-        }
-    });
+    //     if(opslag_blauw.innerHTML == "R"){
+    //         opslag_blauw.innerHTML = "";
+    //         opslag_rood.innerHTML = "R";
+    //     }else{
+    //         opslag_blauw.innerHTML = "R";
+    //         opslag_rood.innerHTML = "";
+    //     }
+    // });
     
-    socket.on('B2F_verandering_game', function(jsonObject){
-        // console.log(`verbonden met socket webserver`);
-        game_rood = document.querySelector(".js-game-red");
-        game_blauw = document.querySelector(".js-game-blue");
-        console.log("item binnen gekregen")
-        console.log(jsonObject);
-        game_rood.innerHTML = jsonObject.red;
-        game_blauw.innerHTML = jsonObject.blue;
-    });
+    // socket.on('B2F_verandering_game', function(jsonObject){
+    //     // console.log(`verbonden met socket webserver`);
+    //     game_rood = document.querySelector(".js-game-red");
+    //     game_blauw = document.querySelector(".js-game-blue");
+    //     console.log("item binnen gekregen")
+    //     console.log(jsonObject);
+    //     game_rood.innerHTML = jsonObject.red;
+    //     game_blauw.innerHTML = jsonObject.blue;
+    // });
     
-    socket.on('B2F_verandering_set', function(jsonObject){
-        // console.log(`verbonden met socket webserver`);
-        set_rood = document.querySelector(".js-set-red");
-        set_blauw = document.querySelector(".js-set-blue");
-        console.log("item binnen gekregen")
-        console.log(jsonObject);
-        set_rood.innerHTML = jsonObject.red;
-        set_blauw.innerHTML = jsonObject.blue;
-    });
+    // socket.on('B2F_verandering_set', function(jsonObject){
+    //     // console.log(`verbonden met socket webserver`);
+    //     set_rood = document.querySelector(".js-set-red");
+    //     set_blauw = document.querySelector(".js-set-blue");
+    //     console.log("item binnen gekregen")
+    //     console.log(jsonObject);
+    //     set_rood.innerHTML = jsonObject.red;
+    //     set_blauw.innerHTML = jsonObject.blue;
+    // });
     
-    socket.on('B2F_tiebrake', function(){
-        scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
-        scoreboardPuntenHeader.innerHTML = "Tiebrake";
-    });
+    // socket.on('B2F_tiebrake', function(){
+    //     scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
+    //     scoreboardPuntenHeader.innerHTML = "Tiebrake";
+    // });
     
-    socket.on('B2F_punten', function(){
-        scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
-        scoreboardPuntenHeader.innerHTML = "Punten";
-    });
+    // socket.on('B2F_punten', function(){
+    //     scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
+    //     scoreboardPuntenHeader.innerHTML = "Punten";
+    // });
 
     
 };
@@ -107,5 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // init();
     listenToUI();
     listenToSocket();
-
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
 });

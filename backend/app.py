@@ -62,27 +62,30 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("/scorebord1") #subscribe met een topic
 
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload.decode('utf-8'))) #als er iemand een bericht in de broker stuurt naar deze topic
-    print("**")
-    bericht = msg.payload.decode("utf-8")
-    # dict = json.loads(bericht)
-    print(bericht) 
-    # print(dict) 
-    if bericht == "connect":
-        send_message("check")
-    if bericht == "startgame":
-        pass
-    if bericht == "teamblauw":
-        print("blauw")
-    if bericht == "teamrood":
-        print("rood")
-    if bericht == "puntrood":
-        # menu(1)
-        send_scorebord("rood")
-    if bericht == "puntblauw":
-        send_scorebord("blauw")
-    # if bericht == "puntblauw":
-    #     pass
+    if msg.topic == "/veld1":
+        print(msg.topic + " " + str(msg.payload.decode('utf-8'))) #als er iemand een bericht in de broker stuurt naar deze topic
+        print("**")
+        bericht = msg.payload.decode("utf-8")
+        # dict = json.loads(bericht)
+        print(bericht) 
+        # print(dict) 
+
+        if bericht == "connect":
+            send_message("check")
+        if bericht == "startgame":
+            pass
+        if bericht == "teamblauw":
+            chose_side("blauw")
+            # print("blauw")
+        if bericht == "teamrood":
+            chose_side("rood")
+            # print("rood")
+        if bericht == "puntrood":
+            # menu(1)
+            send_scorebord("rood")
+        if bericht == "puntblauw":
+            send_scorebord("blauw")
+    
 
 client = mqtt.Client() #maak een nieuwe mqtt client aan
 def run_mqtt():
@@ -90,8 +93,9 @@ def run_mqtt():
     
     client.on_connect = on_connect 
     client.on_message = on_message
-    client.connect('172.30.248.57', 1883, 60) #geef hier het IP adres in
-    send_scorebord("blauw")
+    # client.connect('172.30.248.57', 1883, 60) #geef hier het IP adres in
+    client.connect('127.0.0.1', 1883, 60) #geef hier het IP adres in
+    # send_scorebord("blauw")
     client.loop_forever()
 
 # code met socket**************************************************************************************************************
@@ -104,7 +108,12 @@ def run_mqtt():
 #     print("A new client connects")
 
 def chose_side(kleur):
-    pass
+    Json = {"type" : "opslag", "side" : kleur}
+    # print(Json)
+    message = json.dumps(Json)
+    # print(message)
+    send_scorebord(message)
+
     # socketio.emit("B2F_opstart_opslag", {'opslag':  kleur})
 
 def nieuw_game():
@@ -349,7 +358,6 @@ def menu(keuze):
             point_blauw = "30"
         else:
             point_blauw = "15"
-        # blauw += 15
         # socketio.emit("B2F_verandering_punten", {'red':  point_rood, "blue": point_blauw })
         print("item sent")   
         last_points.append("blue") 
@@ -361,7 +369,7 @@ def menu(keuze):
     elif keuze == 9:
         exit() 
 
-# def run():
+def run():
     keuze = 0
     while keuze  != 9:       
         print("Maak uw keuze:")        
