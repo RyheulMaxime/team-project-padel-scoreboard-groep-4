@@ -1,39 +1,64 @@
 
 #include "config.h"
+#include <WiFi.h>
+#include "arduino_secrets.h"
+#include <MQTT.h>
 
 TTGOClass *ttgo;
-char incomingString;
-String kleur;
-int totalPoints;
+String incomingString;
+int teamrood;
+int teamblauw;
+const char* ssid = SECRET_SSID;
+const char* password = SECRET_PASS;
 
+char charPage;
+WiFiClient net;
+MQTTClient client;
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   ttgo->openBL();
   ttgo->motor_begin();
   ttgo->lvgl_begin();
+ 
+  WiFi.begin(ssid, password);
 
-   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(text, "Padel");
-    lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, 0);
+  client.begin("192.168.10.10", net);
+  incomingString = '1';
+  client.onMessage(messageReceived);
 
+  connect();
+startStyle();
 }
 
 void loop()
 {
+  //wifi--------------------------------------------------------------------------------------------------------
+  client.loop();
+  delay(10);
+  if (!client.connected()) {
+    connect();
+  }
+  // Watch ------------------------------------------------------------------------
   lv_task_handler();
   if (Serial.available() > 0) {
     // read the incoming byte:
-    incomingString = Serial.read();
+    
+    incomingString = Serial.readString();
+    Serial.println("incomming-----------------------------------");
     Serial.println(incomingString);
     
   }
-  if (totalPoints == 3){
-    incomingString = '1';
+  if (incomingString == "check"){
+    charPage = '4';
   }
-  switch (incomingString){
+  if (incomingString == "startspel"){
+    charPage = '2';
+  }
+  
+  switch (charPage){
       case '1':
       startStyle();
       break;
@@ -49,8 +74,46 @@ void loop()
     }
   
   
-  delay(5);
 }
+//connect ----------------------------------------------------------------
+void connect() {
+  Serial.print("checking wifi...");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(1000);
+  }
+
+  Serial.print("\nconnecting...");
+  while (!client.connect("arduino")) {
+    Serial.print(".");
+    delay(1000);
+  }
+
+  Serial.println("\nconnected!");
+
+  client.subscribe("/veld1");
+  // client.unsubscribe("/hello");
+}
+// Receive ---------------------------------------------------------------------------------------
+
+void messageReceived(String &topic, String &payload) {
+  Serial.println("incoming: " + topic + " - " + payload);
+if (payload == "start"){
+  //inkomst van pi en de antwoordt van pi
+    incomingString = "check";
+    Serial.println("gelukt");
+  }
+  if (payload == "teamrood" || payload=="teamblauw"){
+  //inkomst van pi en de antwoordt van pi
+    incomingString = "startspel";
+    Serial.println("gelukt2");
+  }
+  // Note: Do not use the client in the callback to publish, subscribe or
+  // unsubscribe as it may cause deadlocks when other things arrive while
+  // sending and receiving acknowledgments. Instead, change a global variable,
+  // or push to a queue and handle it in the loop after calling `client.loop()`.
+}
+
 // STYLES ----------------------------------------------------------------------------------------------------
 void chooseTeam(){
   whiteScreen();
@@ -170,7 +233,7 @@ void gameStyle(){
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
   
 }
-//EVENT HANDLERS ------------------------------------------------------------------------------------------
+//EVENT HANDLERS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
 {
   if (event == LV_EVENT_CLICKED)
@@ -178,7 +241,8 @@ void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
     printf("START GAME\n");
     ttgo->motor->onec();
     delay(100);
-    incomingString = '4';
+    
+    client.publish("/veld1", "start");
   }
 }
 void teamRood(lv_obj_t *obj, lv_event_t event)
@@ -188,7 +252,7 @@ void teamRood(lv_obj_t *obj, lv_event_t event)
     printf("TEAM ROOD\n");
     ttgo->motor->onec();
     delay(100);
-    incomingString = '2';
+    client.publish("/veld1", "teamrood");
   }
 }
 void teamBlauw(lv_obj_t *obj, lv_event_t event)
@@ -198,28 +262,34 @@ void teamBlauw(lv_obj_t *obj, lv_event_t event)
     printf("TEAM BLAUW\n");
     ttgo->motor->onec();
     delay(100);
-    incomingString = '2';
+    client.publish("/veld1", "teamblauw");
   }
 }
 void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
 {
   static uint32_t i = 0;
   i++;
-  Serial.println("i1");
-  Serial.println(i);
 
   if ((event == LV_EVENT_CLICKED) && (i < 30)) {
     printf("PUNT ROOD\n");
     ttgo->motor->onec();
     delay(100);
+    teamrood +=1;
+    Serial.print("punten rood ");
+    Serial.println(teamrood);
     i = 0;
+    client.publish("/veld1", "puntrood");
   }
   if ( (event == LV_EVENT_CLICKED) && (i >= 30)) {
     Serial.println("MINPUT ROOD");
     ttgo->motor->onec();
     delay(300);
-    ttgo->motor->onec();;
+    ttgo->motor->onec();
+    teamrood -=1;
+    Serial.print("punten rood ");
+    Serial.println(teamrood);
     i = 0;
+    client.publish("/veld1", "minrood");
   }
 }
 
@@ -227,20 +297,25 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
 {
   static uint32_t i = 0;
   i++;
-  Serial.println("i1");
-  Serial.println(i);
   if ((event == LV_EVENT_CLICKED) && (i < 30)) {
     printf("PUNT BLAUW\n");
     ttgo->motor->onec();
     delay(100);
-    totalPoints +=1;
+    teamblauw +=1;
+    Serial.print("punten blauw ");
+    Serial.println(teamblauw);
     i = 0;
+    client.publish("/veld1", "puntblauw");
   }
   if ( (event == LV_EVENT_CLICKED) && (i >= 30)) {
     Serial.println("MINPUT BLAUW");
     ttgo->motor->onec();
     delay(300);
     ttgo->motor->onec();;
+    teamblauw -=1;
+    Serial.print("punten blauw ");
+    Serial.println(teamblauw);
     i = 0;
+    client.publish("/veld1", "minblauw");
   }
 }
