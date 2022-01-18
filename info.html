@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard Info</title>
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/screen.css">
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js" integrity="sha384-LzhRnpGmQP+lOvWruF/lgkcqD+WDVt9fU3H4BWmwP5u5LTmkUGafMcpZKNObVMLU" crossorigin="anonymous"></script>
+    <script src="./script/app.js"></script>
+</head>
+<body>
+    <div class="c-achtergrond-info">
+        <svg class="c-achtergrond-blauw" preserveAspectRatio="none" viewBox="9 6 640 761">             
+            <path d="M450,0H0V761H545.331c3.7-4.617,7.367-9.556,10.9-14.681A343.775,343.775,0,0,0,584.35,696.5a496.85,496.85,0,0,0,23.2-60.383,651.467,651.467,0,0,0,17.519-69.3c4.85-24.628,8.575-50.4,11.071-76.586C638.7,463.348,640,435.683,640,408s-1.3-55.348-3.86-82.226c-2.5-26.193-6.221-51.96-11.071-76.586a651.35,651.35,0,0,0-17.519-69.3,496.8,496.8,0,0,0-23.2-60.384,343.767,343.767,0,0,0-28.119-49.82,217.4,217.4,0,0,0-32.274-37.617C512.489,21.647,500.49,13.649,488.291,8.289a99.978,99.978,0,0,0-18.865-6.182A91.359,91.359,0,0,0,450,0Z" transform="translate(649 767) rotate(180)" fill="#739ce6"></path>
+        </svg>
+        <svg class="c-achtergrond-rood" preserveAspectRatio="none" viewBox="9 6 640 761">            
+            <path d="M932,1251H482V490h545.331c3.7,4.617,7.367,9.556,10.9,14.681a343.775,343.775,0,0,1,28.119,49.82,496.85,496.85,0,0,1,23.2,60.383,651.467,651.467,0,0,1,17.519,69.3c4.85,24.628,8.575,50.4,11.071,76.586C1120.7,787.653,1122,815.317,1122,843s-1.3,55.348-3.86,82.226c-2.5,26.193-6.221,51.96-11.071,76.586a651.35,651.35,0,0,1-17.519,69.3,496.8,496.8,0,0,1-23.2,60.384,343.767,343.767,0,0,1-28.119,49.82,217.4,217.4,0,0,1-32.274,37.617c-11.467,10.415-23.467,18.414-35.665,23.774a99.978,99.978,0,0,1-18.865,6.182A91.359,91.359,0,0,1,932,1251Z" transform="translate(-473 -484)" fill="#dc552c"></path>         
+        </svg>
+    </div>
+    <div class="c-achtergrond-mid-info">
+        <svg class="c-achtergrond-mid-groot" preserveAspectRatio="none" viewBox="9 6 458.46 761.67">               
+            <path d="M458.454,761.675H0c57.539-111.183,89.227-258.922,89.227-416C89.227,220.5,69.13,100.964,31.109,0H427.346c-38.02,100.964-58.118,220.5-58.118,345.675,0,157.079,31.688,304.817,89.228,416Z" transform="translate(9 6)" fill="#0a2b66"></path>         
+        </svg>
+        <svg class="c-achtergrond-mid-klein" preserveAspectRatio="none" viewBox="9 6 375.98 402">             
+            <path id="Subtraction_12-2" data-name="Subtraction 12" d="M797.759,722h-375.5c15.307-63.565,23.068-131.023,23.068-200.5,0-69.836-7.842-137.63-23.31-201.5H798c-15.467,63.867-23.31,131.661-23.31,201.5,0,69.476,7.761,136.934,23.068,200.5Z" transform="translate(-413.02 -314)" fill="#0a2b66"></path>         
+        </svg>          
+    </div>
+    <div class="c-scoreboard-groot">
+        <div class="c-scoreboard-blue">
+            <p class="c-scoreboard-team">Team Blauw</p>
+            <p class="c-scoreboard-opslag">R</p>
+            <p class="c-scoreboard-point">1</p>
+            <p class="c-scoreboard-point__punten">45</p>
+            <p class="c-scoreboard-point">4</p>
+            <p class="c-scoreboard-point">6</p>
+        </div>
+        <div class="c-scoreboard-mid">
+            <div class="c-scoreboard-mid__logo">
+                <img src="/img/logo/Image 1.png" alt="logo-club">
+            </div>
+            <p class="c-scoreboard-mid-tekst">Opslag</p>
+            <p class="c-scoreboard-mid-tekst">Set</p>
+            <p class="c-scoreboard-mid-tekst">Punten</p>
+            <p class="c-scoreboard-mid-tekst">Game</p>
+            <p class="c-scoreboard-mid-tekst">Vorige Game</p>
+        </div>
+        <div class="c-scoreboard-red">
+            <p class="c-scoreboard-team">Team Rood</p>
+            <p class="c-scoreboard-opslag"></p>
+            <p class="c-scoreboard-point">1</p>
+            <p class="c-scoreboard-point__punten">15</p>
+            <p class="c-scoreboard-point">3</p>
+            <p class="c-scoreboard-point">4</p>
+        </div>
+    </div>
+    <div class="c-scoreboard-klein">
+        <div class="c-scoreboard-blue-set">
+            <p class="c-scoreboard-set-title">Set</p>
+            <p class="c-scoreboard-set-item">2</p>
+        </div>
+        <div class="c-scoreboard-blue-info">
+            <p class="c-scoreboard-team">Team Blauw</p>
+            <p class="c-scoreboard-point">6</p>
+            <p class="c-scoreboard-point">4</p>
+            <p class="c-scoreboard-point">7</p>
+        </div>
+        <div class="c-scoreboard-mid-info">
+            <div class="c-scoreboard-mid__logo">
+                <img src="/img/logo/Image 1.png" alt="logo-club">
+            </div>
+            <p class="c-scoreboard-mid-tekst">Game 1</p>
+            <p class="c-scoreboard-mid-tekst">Game 2</p>
+            <p class="c-scoreboard-mid-tekst">Game 3</p>
+        </div>
+        <div class="c-scoreboard-red-info">
+            <p class="c-scoreboard-team">Team Rood</p>
+            <p class="c-scoreboard-point">1</p>
+            <p class="c-scoreboard-point">6</p>
+            <p class="c-scoreboard-point">6</p>
+        </div>
+        <div class="c-scoreboard-red-set">
+            <p class="c-scoreboard-set-title">Set</p>
+            <p class="c-scoreboard-set-item">1</p>
+        </div>
+    </div>
+    <div class="c-info">
+        <p class="c-info-melding">Gelieve u abonement te verlengen</p>
+        <div class="c-info-sponsor">
+            <img src="img/sponsor/Image 3.png" alt="sponsor 1">
+            <img src="img/sponsor/Image 4.png" alt="sponsor 2">
+            <img src="img/sponsor/Image 5.png" alt="sponsor 3">
+        </div>
+    </div>
+</body>
+</html>

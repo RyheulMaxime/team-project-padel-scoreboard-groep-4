@@ -1,0 +1,633 @@
+/*------------------------------------*\
+#FONTS
+\*------------------------------------*/
+
+/* @font-face {
+    font-family: "Work sans Web";
+    font-weight: 400;
+    src: url("../fonts/work-sans-v11-latin-regular.woff2") format("woff2")
+}
+
+@font-face {
+    font-family: "Work sans Web";
+    font-weight: 700;
+    src: url("../fonts/work-sans-v11-latin-700.woff2") format("woff2")
+} */
+
+/*------------------------------------*\
+#Variables
+\*------------------------------------*/
+
+:root {
+    /* colors */
+    --global-color-alpha:#D4E2FA;
+    --global-color-alpha-dark:#021433; 
+    --global-color-alpha-light:#F0F4FC; 
+    
+    --global-color-alpha-light-border:#BAD0F7; 
+
+    
+
+    --color-front: var(--global-color-alpha-dark);
+    --color-back: var(--global-color-alpha);
+
+    --color-sun: var(--color-dark);
+
+    /* opacity */
+    --global-opacity:60%;
+
+    /* transitions */
+    /* --local-sun-position-left: 60%;
+    --local-sun-position-bottom:40%; */
+
+}
+
+
+
+/*------------------------------------*\
+#GENERIC
+\*------------------------------------*/
+
+/*
+    Generic: Page
+    ---
+    Global page styles + universal box-sizing:
+*/
+
+html {
+    font-size: 100%;
+    line-height: 1.5;
+    /* font-family: Helvetica, arial, sans-serif; */
+    font-family: "Work Sans", Helvetica;
+    /* font-family: "Work sans Web", Helvetica; */
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-front);
+    background-color: var(--color-back);
+    font-feature-settings: "zero" 1;
+    height: 100%;
+}
+
+
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/*
+* Remove text-shadow in selection highlight:
+* https://twitter.com/miketaylr/status/12228805301
+*
+* Customize the background color to match your design.
+*/
+
+::-moz-selection {
+    background: red;
+    color: white;
+    text-shadow: none;
+}
+
+::selection {
+    background: red;
+    color: white;
+    text-shadow: none;
+}
+
+/*------------------------------------*\
+#Elements
+\*------------------------------------*/
+
+/*
+Elements: Images
+---
+Default markup for images to make them responsive
+*/
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+/*
+    Elements: typography
+    ---
+    Default markup for typographic elements
+*/
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.25rem;
+    line-height: 3rem;
+    margin: 0 0 24px;
+}
+
+h2 {
+    font-size: 32px;
+    line-height: 40px;
+    margin: 0 0 24px;
+}
+
+h3 {
+    font-size: 26px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+h4,
+h5,
+h6 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    margin: 0 0 24px;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+    margin: 0 0 24px;
+    
+}
+
+ul,
+ol {
+    padding-left: 24px;
+}
+
+li ul,
+li ol {
+    margin-bottom: 0;
+}
+
+blockquote {
+    font-style: normal;
+    font-size: 23px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+blockquote * {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+figcaption {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 8px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: LightGrey;
+    margin: 0 0 24px;
+}
+
+a {
+    color: red;
+    outline-color: red;
+    outline-width: medium;
+    outline-offset: 2px;
+}
+
+a:visited,
+a:active {
+    color: red;
+}
+
+a:hover,
+a:focus {
+    color: red;
+}
+
+label,
+input {
+    display: block;
+}
+
+select {
+    width: 100%;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+/*------------------------------------*\
+#OBJECTS
+\*------------------------------------*/
+
+/*
+    Object: Button reset
+    ---
+    Small button reset object
+*/
+
+.o-button-reset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+
+    /* inherit font & color from ancestor */
+    color: inherit;
+    font: inherit;
+
+    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+    line-height: normal;
+
+    /* Corrects font smoothing for webkit */
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+
+    /* Corrects inability to style clickable `input` types in iOS */
+    -webkit-appearance: none;
+}
+
+/*
+    Object: Hide accessible
+    ---
+    Accessibly hide any element
+*/
+
+.o-hide-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/*------------------------------------*\
+#COMPONENTS
+\*------------------------------------*/
+
+
+
+/*
+    Component: background
+    ---
+    Website main background
+*/
+
+.c-achtergrond{
+    /* position: relative; */
+    z-index: 1;
+    position:absolute;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+    width: 100%;
+}
+
+.c-achtergrond-mid{
+    position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.c-achtergrond-mid-groot{
+    height: 95%;
+    width: 35%;
+}
+
+.c-achtergrond-mid-klein{
+    display: none;
+}
+
+.c-achtergrond-rood{
+    height: 95%;
+    width: 100%;
+}
+
+.c-achtergrond-blauw{
+    height: 95%;
+    width: 100%;
+}   
+
+.c-achtergrond-info{
+    z-index: 1;
+    position:absolute;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+    width: 100%;
+    /* transition: transform 1.5s; */
+    transform: translateY(-45%);
+}
+
+.c-achtergrond-mid-info{
+    position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.c-achtergrond-mid-info > .c-achtergrond-mid-groot{
+    display: none;
+}
+
+.c-achtergrond-mid-info > .c-achtergrond-mid-klein{
+    display: block;
+    height: 50vh;
+    width: 20%;
+}
+
+/*
+    Component: scoreboard
+    ---
+    Website main scoreboard
+*/
+
+.c-scoreboard{
+    width: 100%;
+    height: 95vh;
+    position: absolute;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.c-scoreboard-blue{
+    justify-content: flex-end;
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+    /* grid-template-rows: repeat(6, 1fr); */
+}
+
+.c-scoreboard-mid{
+    /* display: flex; */
+    justify-content: center;
+    color: var(--global-color-alpha-light);
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+}
+
+.c-scoreboard-mid__logo{
+    justify-self: center;
+    align-self: center;
+}
+
+.c-scoreboard-mid-tekst{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+    margin: 0;
+}
+
+.c-scoreboard-red{
+    justify-content: start;
+    
+    display: grid;
+    grid-template-rows: 3fr repeat(5, 2fr);
+}
+
+.c-scoreboard-team{
+    justify-self: center;
+    align-self: center;
+    font-size: 4rem;
+    margin: 0;
+}
+
+.c-scoreboard-opslag{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.c-scoreboard-point{
+    justify-self: center;
+    align-self: center;
+    font-size: 3rem;
+    margin: 0;
+}
+
+.c-scoreboard-point__punten{
+    justify-self: center;
+    align-self: center;
+    font-size: 5rem;
+    margin: 0;
+}
+
+.c-scoreboard-point-game{
+    justify-self: center;
+    align-self: center;
+    font-size: 4rem;
+    margin: 0;
+}
+
+.c-scoreboard-groot{
+    width: 100%;
+    height: 95vh;
+    position: absolute;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    display: none;
+}
+
+.c-scoreboard-klein{
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 50vh;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.c-scoreboard-blue-info{
+    justify-content: flex-end;
+    display: grid;
+    grid-template-rows: 3fr repeat(3, 2fr);
+}
+
+.c-scoreboard-mid-info{
+    justify-content: center;
+    color: var(--global-color-alpha-light);
+    display: grid;
+    grid-template-rows: 3fr repeat(3, 2fr);
+}
+
+.c-scoreboard-red-info{
+    justify-content: start;
+    display: grid;
+    grid-template-rows: 3fr repeat(3, 2fr);
+}
+
+.c-scoreboard-blue-set{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    justify-content: end;
+}
+
+.c-scoreboard-red-set{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    justify-content: start;
+}
+
+.c-scoreboard-set-title{
+    grid-row: 2;
+    justify-self: center;
+    margin: 0;
+    font-size: 4rem;
+}
+
+.c-scoreboard-set-item{
+    grid-row: 3;
+    justify-self: center;
+    margin: 0;
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+/*
+    Component: info
+    ---
+    Website main info
+*/
+
+.c-info{
+    height: 40vh;
+    transform: translateY(140%);
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    /* justify-content: center; */
+    /* margin: 2rem; */
+}
+
+.c-info-sponsor{
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: calc(1rem);
+}
+
+.c-info-melding{
+    justify-self: center;
+    font-size: 3rem;
+    border: calc(1rem/4) solid var(--global-color-alpha-dark);
+    padding: calc(1rem/2);
+    background-color: var(--global-color-alpha-light-border);
+    width: 80%;
+}
+
+/*------------------------------------*\
+#UTILITIES
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+#STATES
+\*------------------------------------*/
+
+/*
+    Change the theme using CSS vars.
+*/
+
+/* Night version: just switch the light and dark vars */
+
+/*------------------------------------*\
+#MEDIA
+\*------------------------------------*/
+
+/*
+    Print styles.
+    ---
+    Inlined to avoid the additional HTTP request:
+    http://www.phpied.com/delay-loading-your-print-css/
+*/
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        /* Black prints faster:
+        http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    /*
+    * Don't show links that are fragment identifiers,
+    * or use the `javascript:` pseudo protocol
+    */
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
+    * Printing Tables:
+    * http://css-discuss.incutio.com/wiki/Printing_Tables
+    */
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+
+.is-night {
+    --color-front: var(--color-light);
+    --color-back: var(--color-dark);
+    --color-sun: var(--color-light);
+ }
