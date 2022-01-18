@@ -5,7 +5,7 @@ var elem = document.documentElement;
 
 
 // mqtt ******************************************************************************************************
-var client = new Paho.MQTT.Client('127.0.0.1', 8080, 'javascript');
+var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'javascript');
 // var client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
 
 // set callback handlers
@@ -40,8 +40,19 @@ function onMessageArrived(message) {
   console.log(json);
   if (json.type == "opslag"){
     choseSide(json.side);
-  };
-
+  }
+  else if(json.type == "punten"){
+    changePoints(json.rood, json.blauw)
+  }
+  else if(json.type == "game"){
+    changeGame(json.rood, json.blauw)
+  }
+  else if(json.type == "set"){
+    changeSet(json.rood, json.blauw)
+  }
+  else if(json.type == "background"){
+    changeBackground(json.background)
+  }
 }
 
 
@@ -60,61 +71,55 @@ const choseSide = function(kleur){
     
 }
 
-// socket ******************************************************************************
-const listenToUI = function(){
-   
-};
+const changePoints = function( puntenRood, puntenBlauw){
+  rood = document.querySelector(".js-point-red");
+  blauw = document.querySelector(".js-point-blue");
+  
+  opslag_blauw = document.querySelector(".js-opslag-blue");
+  opslag_rood = document.querySelector(".js-opslag-red");
 
+  console.log("item binnen gekregen")
+  rood.innerHTML = puntenRood;
+  blauw.innerHTML = puntenBlauw;
+
+  if(opslag_blauw.innerHTML == "R"){
+      opslag_blauw.innerHTML = "";
+      opslag_rood.innerHTML = "R";
+  }else{
+      opslag_blauw.innerHTML = "R";
+      opslag_rood.innerHTML = "";
+  }
+}
+
+
+const changeGame = function(gameRood, gameBlauw){
+  game_rood = document.querySelector(".js-game-red");
+  game_blauw = document.querySelector(".js-game-blue");
+  console.log("item binnen gekregen")
+  
+  game_rood.innerHTML = gameRood;
+  game_blauw.innerHTML = gameBlauw;
+}
+
+const changeSet = function(setRood, setBlauw){
+  set_rood = document.querySelector(".js-set-red");
+  set_blauw = document.querySelector(".js-set-blue");
+  console.log("item binnen gekregen")
+  set_rood.innerHTML = setRood;
+  set_blauw.innerHTML = setBlauw;
+}
+
+const changeBackground = function(tekst){
+  scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
+  scoreboardPuntenHeader.innerHTML = tekst;
+}
+
+// socket ******************************************************************************
 
 
 const listenToSocket = function(){
-    // socket.on('connect', function(){
-    //     console.log(`verbonden met socket webserver`);
-    //     // document.querySelector(".js-button").click();
-    //     // window.scrollTo(0,1);
-    // });
-
-    // socket.on('B2F_verandering_punten', function(jsonObject){
-    //     // console.log(`verbonden met socket webserver`);
-    //     rood = document.querySelector(".js-point-red");
-    //     blauw = document.querySelector(".js-point-blue");
-        
-    //     opslag_blauw = document.querySelector(".js-opslag-blue");
-    //     opslag_rood = document.querySelector(".js-opslag-red");
-
-    //     console.log("item binnen gekregen")
-    //     console.log(jsonObject);
-    //     rood.innerHTML = jsonObject.red;
-    //     blauw.innerHTML = jsonObject.blue;
-
-    //     if(opslag_blauw.innerHTML == "R"){
-    //         opslag_blauw.innerHTML = "";
-    //         opslag_rood.innerHTML = "R";
-    //     }else{
-    //         opslag_blauw.innerHTML = "R";
-    //         opslag_rood.innerHTML = "";
-    //     }
-    // });
     
-    // socket.on('B2F_verandering_game', function(jsonObject){
-    //     // console.log(`verbonden met socket webserver`);
-    //     game_rood = document.querySelector(".js-game-red");
-    //     game_blauw = document.querySelector(".js-game-blue");
-    //     console.log("item binnen gekregen")
-    //     console.log(jsonObject);
-    //     game_rood.innerHTML = jsonObject.red;
-    //     game_blauw.innerHTML = jsonObject.blue;
-    // });
     
-    // socket.on('B2F_verandering_set', function(jsonObject){
-    //     // console.log(`verbonden met socket webserver`);
-    //     set_rood = document.querySelector(".js-set-red");
-    //     set_blauw = document.querySelector(".js-set-blue");
-    //     console.log("item binnen gekregen")
-    //     console.log(jsonObject);
-    //     set_rood.innerHTML = jsonObject.red;
-    //     set_blauw.innerHTML = jsonObject.blue;
-    // });
     
     // socket.on('B2F_tiebrake', function(){
     //     scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
@@ -166,8 +171,6 @@ const listenToSocket = function(){
 
 document.addEventListener('DOMContentLoaded', function() {
     // init();
-    listenToUI();
-    listenToSocket();
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 });
