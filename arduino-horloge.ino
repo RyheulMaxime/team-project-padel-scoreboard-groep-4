@@ -32,6 +32,18 @@ void setup()
   connect();
   startStyle();
 
+    Serial.print("Connect to pi ");
+  if (incomingString == "check"){
+    loop();
+  }else{
+    Serial.print(".");
+    
+    send_message("connect");
+    delay(1000);
+  }
+  
+    Serial.println(" ");
+
 }
 
 void loop()
@@ -55,13 +67,6 @@ void loop()
   if (incomingString == "check") {
     piConnected = true;
     startStyle();
-  } else {
-    Serial.print("Connect to pi ");
-    Serial.print(".");
-    Serial.println(" ");
-    
-    send_message("connect");
-    delay(1000);
 
   }
   if (incomingString == "startspel") {
@@ -87,7 +92,7 @@ void loop()
 }
 // send message----------------------------------------------------------------------------------
 void send_message(String msg){
-  client.publish("/veld1",msg,qos=2);
+  client.publish("/veld1",msg);
 }
 //connect ----------------------------------------------------------------
 void connect() {
