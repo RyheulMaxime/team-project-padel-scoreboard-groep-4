@@ -10,6 +10,7 @@ int teamrood;
 int teamblauw;
 const char* ssid = SECRET_SSID;
 const char* password = SECRET_PASS;
+bool piConnected;
 
 char charPage;
 WiFiClient net;
@@ -22,15 +23,15 @@ void setup()
   ttgo->openBL();
   ttgo->motor_begin();
   ttgo->lvgl_begin();
- 
+
   WiFi.begin(ssid, password);
 
   client.begin("192.168.10.10", net);
-  incomingString = '1';
   client.onMessage(messageReceived);
 
   connect();
-startStyle();
+  startStyle();
+
 }
 
 void loop()
@@ -45,35 +46,48 @@ void loop()
   lv_task_handler();
   if (Serial.available() > 0) {
     // read the incoming byte:
-    
+
     incomingString = Serial.readString();
     Serial.println("incomming-----------------------------------");
-    Serial.println(incomingString);
+
+  }
+
+  if (incomingString == "check") {
+    piConnected = true;
+    startStyle();
+  } else {
+    Serial.print("Connect to pi ");
+    Serial.print(".");
+    Serial.println(" ");
     
+    send_message("connect");
+    delay(1000);
+
   }
-  if (incomingString == "check"){
-    charPage = '4';
-  }
-  if (incomingString == "startspel"){
+  if (incomingString == "startspel") {
     charPage = '2';
   }
-  
-  switch (charPage){
-      case '1':
+
+  switch (charPage) {
+    case '1':
       startStyle();
       break;
-      case '2':
+    case '2':
       gameStyle();
       break;
-      case'3':
+    case'3':
       titleStyle();
       break;
-      case '4':
+    case '4':
       chooseTeam();
       break;
-    }
-  
-  
+  }
+
+
+}
+// send message----------------------------------------------------------------------------------
+void send_message(String msg){
+  client.publish("/veld1",msg,qos=2);
 }
 //connect ----------------------------------------------------------------
 void connect() {
@@ -98,16 +112,7 @@ void connect() {
 
 void messageReceived(String &topic, String &payload) {
   Serial.println("incoming: " + topic + " - " + payload);
-if (payload == "start"){
-  //inkomst van pi en de antwoordt van pi
-    incomingString = "check";
-    Serial.println("gelukt");
-  }
-  if (payload == "teamrood" || payload=="teamblauw"){
-  //inkomst van pi en de antwoordt van pi
-    incomingString = "startspel";
-    Serial.println("gelukt2");
-  }
+  incomingString = payload;
   // Note: Do not use the client in the callback to publish, subscribe or
   // unsubscribe as it may cause deadlocks when other things arrive while
   // sending and receiving acknowledgments. Instead, change a global variable,
@@ -115,14 +120,14 @@ if (payload == "start"){
 }
 
 // STYLES ----------------------------------------------------------------------------------------------------
-void chooseTeam(){
+void chooseTeam() {
   whiteScreen();
-   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(text, "Select the team that starts");
-    lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -70);
+  lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(text, "Select the team that starts");
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -70);
 
-    //btn 1
-    lv_obj_t *label;
+  //btn 1
+  lv_obj_t *label;
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(btn1, teamBlauw);
   lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 10, 0);
@@ -162,37 +167,48 @@ void chooseTeam(){
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
 }
 
-void startStyle(){
+void startStyle() {
   whiteScreen();
-    lv_obj_t *label;
+  lv_obj_t *label;
   lv_obj_t *btnStartGame = lv_btn_create(lv_scr_act(), NULL);
-  lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
   lv_obj_align(btnStartGame, NULL,  LV_ALIGN_CENTER, 0, 0);
   label = lv_label_create(btnStartGame, NULL);
   lv_label_set_text(label, "START GAME");
-   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
+  lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, -25, -70);
+
+  lv_label_set_text(text, "Connecting...");
+  lv_obj_set_style_local_text_color(text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+  if (piConnected == true) {
+
     lv_label_set_text(text, "Connected");
-    lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -70);
-  lv_obj_set_style_local_text_color(text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN);
+    lv_obj_set_style_local_text_color(text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN);
+
+  }
+
+
+
 }
 
-void whiteScreen(){
-  
-lv_obj_t * screen = lv_obj_create(NULL, NULL);
-lv_scr_load(screen);
+void whiteScreen() {
+
+  lv_obj_t * screen = lv_obj_create(NULL, NULL);
+  lv_scr_load(screen);
 }
-void titleStyle(){
+void titleStyle() {
   whiteScreen();
-   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_text(text, "Padel");
-    lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(text, "Padel");
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, 0);
 
 
 }
 
-void gameStyle(){
+void gameStyle() {
   whiteScreen();
-    lv_obj_t *label;
+  lv_obj_t *label;
   //btn 1
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(btn1, event_handlerBLAUW);
@@ -231,7 +247,7 @@ void gameStyle(){
 
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
-  
+
 }
 //EVENT HANDLERS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
@@ -241,8 +257,9 @@ void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
     printf("START GAME\n");
     ttgo->motor->onec();
     delay(100);
-    
-    client.publish("/veld1", "start");
+    send_message("startgame");
+    charPage = '4';
+
   }
 }
 void teamRood(lv_obj_t *obj, lv_event_t event)
@@ -252,7 +269,8 @@ void teamRood(lv_obj_t *obj, lv_event_t event)
     printf("TEAM ROOD\n");
     ttgo->motor->onec();
     delay(100);
-    client.publish("/veld1", "teamrood");
+    charPage = '2';
+    send_message("teamrood");
   }
 }
 void teamBlauw(lv_obj_t *obj, lv_event_t event)
@@ -262,7 +280,7 @@ void teamBlauw(lv_obj_t *obj, lv_event_t event)
     printf("TEAM BLAUW\n");
     ttgo->motor->onec();
     delay(100);
-    client.publish("/veld1", "teamblauw");
+    send_message("teamblauw");
   }
 }
 void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
@@ -274,22 +292,22 @@ void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
     printf("PUNT ROOD\n");
     ttgo->motor->onec();
     delay(100);
-    teamrood +=1;
+    teamrood += 1;
     Serial.print("punten rood ");
     Serial.println(teamrood);
     i = 0;
-    client.publish("/veld1", "puntrood");
+    send_message("puntrood");
   }
   if ( (event == LV_EVENT_CLICKED) && (i >= 30)) {
     Serial.println("MINPUT ROOD");
     ttgo->motor->onec();
     delay(300);
     ttgo->motor->onec();
-    teamrood -=1;
+    teamrood -= 1;
     Serial.print("punten rood ");
     Serial.println(teamrood);
     i = 0;
-    client.publish("/veld1", "minrood");
+    send_message("minpunt");
   }
 }
 
@@ -301,21 +319,21 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
     printf("PUNT BLAUW\n");
     ttgo->motor->onec();
     delay(100);
-    teamblauw +=1;
+    teamblauw += 1;
     Serial.print("punten blauw ");
     Serial.println(teamblauw);
     i = 0;
-    client.publish("/veld1", "puntblauw");
+    send_message("puntblauw");
   }
   if ( (event == LV_EVENT_CLICKED) && (i >= 30)) {
     Serial.println("MINPUT BLAUW");
     ttgo->motor->onec();
     delay(300);
     ttgo->motor->onec();;
-    teamblauw -=1;
+    teamblauw -= 1;
     Serial.print("punten blauw ");
     Serial.println(teamblauw);
     i = 0;
-    client.publish("/veld1", "minblauw");
+    send_message("minpunt");
   }
 }
