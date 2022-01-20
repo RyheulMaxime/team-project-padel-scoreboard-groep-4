@@ -38,6 +38,7 @@ void setup()
   }else{
     Serial.print(".");
     
+    incomingString = Serial.readString();
     send_message("connect");
     delay(1000);
   }
@@ -285,6 +286,7 @@ void teamBlauw(lv_obj_t *obj, lv_event_t event)
     printf("TEAM BLAUW\n");
     ttgo->motor->onec();
     delay(100);
+    charPage = '2';
     send_message("teamblauw");
   }
 }
