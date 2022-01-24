@@ -1,12 +1,17 @@
-// const lanIP = `${window.location.hostname}:5000`;
-// const socket = io(`http://${lanIP}`);
-var elem = document.documentElement;
 
+// var elem = document.documentElement;
 
 
 // mqtt ******************************************************************************************************
-var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'javascript');
-// var client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
+// mqtt broker py
+// var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'javascript');
+// test mqtt broker
+var client = new Paho.MQTT.Client('127.0.0.1', 8888, 'javascript');
+var name1="",name2="",name3="",name4= "";
+var tiebreak = false;
+var begin_tiebreak = 0;
+var count_tiebreak = 0;
+var side = "team-1"; 
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;
@@ -21,6 +26,7 @@ function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
   console.log("onConnect");
   client.subscribe("/scorebord1");
+  client.subscribe("/namen1");
 //   message = new Paho.MQTT.Message("Hello");
 //   message.destinationName = "/scorebord1";
 //   client.send(message);
@@ -53,52 +59,97 @@ function onMessageArrived(message) {
   else if(json.type == "background"){
     changeBackground(json.background)
   }
+  else if(json.type == "gedaan"){
+    endGame(json.side)
+  }
+  else if(json.type == "name"){
+    console.log(json.side, json.name1 , json.name2)
+    changeName(json.side, json.name1 , json.name2)
+  }
 }
 
-
 const choseSide = function(kleur){
-    opslag_blauw = document.querySelector(".js-opslag-blue");
-    opslag_rood = document.querySelector(".js-opslag-red");
+    opslag_blauw = document.querySelector(".js-opslag");
+    // opslag_rood = document.querySelector(".js-opslag-red");
+
     if(kleur == "blauw"){
-        opslag_blauw.innerHTML = "R";
-        opslag_rood.innerHTML = "";
+        opslag_blauw.classList.add("is-team-2")
+        side = "team-2"
     }else if(kleur == "rood"){
-        opslag_blauw.innerHTML = "";
-        opslag_rood.innerHTML = "R";
-    }else{
-        console.log("iets fout in choseSide")
-    };
-    
+      opslag_blauw.classList.remove("is-team-2")
+      side = "team-1"
+    }
+    // else{
+    //   opslag_blauw.innerHTML = "";
+    //   opslag_rood.innerHTML = "";
+    // };
 }
 
 const changePoints = function( puntenRood, puntenBlauw){
   rood = document.querySelector(".js-point-red");
   blauw = document.querySelector(".js-point-blue");
-  
-  opslag_blauw = document.querySelector(".js-opslag-blue");
-  opslag_rood = document.querySelector(".js-opslag-red");
+  spel = document.querySelector(".js-opslag");
 
-  console.log("item binnen gekregen")
-  rood.innerHTML = puntenRood;
-  blauw.innerHTML = puntenBlauw;
+  if(spel.classList.contains("is-done")){
 
-  if(opslag_blauw.innerHTML == "R"){
-      opslag_blauw.innerHTML = "";
-      opslag_rood.innerHTML = "R";
-  }else{
-      opslag_blauw.innerHTML = "R";
-      opslag_rood.innerHTML = "";
+  }else {
+    rood.innerHTML = puntenRood;
+    blauw.innerHTML = puntenBlauw;
+
+    if(tiebreak == true){
+      // console.log(begin_tiebreak)
+      // if(begin_tiebreak == 0){
+        
+      // }
+      if(begin_tiebreak == 1){
+        begin_tiebreak = 2
+        if(opslag.classList.contains("is-team-2")){
+          opslag.classList.remove("is-team-2")
+        }else{
+          opslag.classList.add("is-team-2")
+        }
+        spel.classList.add("is-left")
+      }else if(begin_tiebreak == 2){
+        begin_tiebreak = 3
+        spel.classList.remove("is-left")
+      }else if(begin_tiebreak == 3){
+        if(count_tiebreak == 0){
+          count_tiebreak = 1
+          if(opslag.classList.contains("is-team-2")){
+            opslag.classList.remove("is-team-2")
+          }else{
+            opslag.classList.add("is-team-2")
+          }
+          spel.classList.add("is-left")
+        }else if(count_tiebreak == 1){
+          count_tiebreak = 0
+        }
+      }
+    }else{
+      if(spel.classList.contains("is-left")){
+        spel.classList.remove("is-left")
+      }else{
+        spel.classList.add("is-left")
+      } 
+    }
   }
 }
-
-
 const changeGame = function(gameRood, gameBlauw){
   game_rood = document.querySelector(".js-game-red");
   game_blauw = document.querySelector(".js-game-blue");
+  opslag = document.querySelector(".js-opslag");
   console.log("item binnen gekregen")
   
   game_rood.innerHTML = gameRood;
   game_blauw.innerHTML = gameBlauw;
+
+  if(opslag.classList.contains("is-team-2")){
+    opslag.classList.remove("is-team-2")
+    opslag.classList.add("is-left")
+  }else{
+    opslag.classList.add("is-team-2")
+    opslag.classList.add("is-left")
+  }
 }
 
 const changeSet = function(setRood, setBlauw){
@@ -109,30 +160,138 @@ const changeSet = function(setRood, setBlauw){
   set_blauw.innerHTML = setBlauw;
 }
 
-const changeBackground = function(tekst){
-  scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
-  scoreboardPuntenHeader.innerHTML = tekst;
+const endGame = function(winaar){
+  winner = document.querySelector(".js-winner")
+  gedaan = document.querySelector(".js-opslag");
+  message = ""
+  if (winaar == "rood"){
+    if(name1 != ""){
+      if(name2 != ""){
+        message +=  `${name1} en `;
+      }
+      else{
+        message +=  `${name1}`;
+      }
+    }
+    if(name2 != ""){
+      message +=  `${name2}`;
+    }
+    if(name1 != "" ^ name2 != ""){
+      message += ` is de winnaars`
+    }
+    if(name1 != "" && name2 != ""){
+      message += ` zijn de winnaars`
+    }
+    else if(name1 == "" && name2 == ""){
+      message += `Team 1 zijn de winnaars`
+    }
+  }
+  if (winaar == "blauw"){
+    if(name3 != ""){
+      if(name4 != ""){
+        message +=  `${name3} en `;
+      }
+      else{
+        message +=  `${name3}`;
+      }
+    }
+    if(name4 != ""){
+      message +=  `${name4}`;
+    }
+    if(name3 != "" || name4 != ""){
+      message += ` is de winnaars`
+    }
+    if(name3 != "" && name4 != ""){
+      message += ` zijn de winnaars`
+    }
+    else if(name2 == "" && name4 == ""){
+      message += `Team 1 zijn de winnaars`
+    }
+  }
+  winner.innerHTML = message
+  gedaan.classList.add("is-done")
 }
 
-// socket ******************************************************************************
+const changeBackground = function(tekst){
+  type = document.querySelector(".js-opslag");
+  if(tekst == "Tiebrake"){
+    type.classList.add("tiebreak")
+    tiebreak = true
+    begin_tiebreak = 1
+    if(side == "team-1"){
+      spel.classList.remove("is-team-2")
+      spel.classList.remove("is-left")
+    } else{
+      spel.classList.add("is-team-2")
+      spel.classList.remove("is-left")
+    }
+  }else{
+    type.classList.remove("tiebreak")
+    tiebreak = false
+    begin_tiebreak = 0
+  }
+  
+}
 
+const changeName = function(kleur,naam1,naam2){
+  teamRood = document.querySelector(".js-team-red")
+  teamBlauw = document.querySelector(".js-team-blue")
+  var namenRood = ""
+  var namenBlauw = ""
+  if (kleur == "rood"){
+    if(naam1 != ""){
+      if(naam2 != ""){
+        namenRood +=  `<p class="c-scoreboard-naam">${naam1},</p>`;
+        name1 = naam1
+        name2 = ""
+      }
+      else{
+        namenRood +=  `<p class="c-scoreboard-naam">${naam1}</p>`;
+        name1 = naam1
+      }
+    }
+    if(naam2 != ""){
+      namenRood +=  `<p class="c-scoreboard-naam">${naam2}</p>`;
+      name2 = naam2
+      if(naam1 == ""){
+        name1 = ""
+      }
+    }
+    if(naam1 == "" && naam2 == ""){
+      namenRood = `<p class="c-scoreboard-naam">Team Rood</p>`
+      name1 = ""
+      name2 = ""
+    }
+    teamRood.innerHTML = namenRood;
+  }else if(kleur == "blauw"){
+    if(naam1 != ""){
+      if(naam2 != ""){
+        namenBlauw +=  `<p class="c-scoreboard-naam">${naam1},</p>`;
+        name3 = naam1
+      }
+      else{
+        namenBlauw +=  `<p class="c-scoreboard-naam">${naam1}</p>`;
+        name3 = naam1
+        name4 = ""
+      }
+    }
+    if(naam2 != ""){
+      namenBlauw +=  `<p class="c-scoreboard-naam">${naam2}</p>`;
+      name4 = naam2
+      if(naam1 == ""){
+        name3 = ""
+      }
+    }
+    if(naam1 == "" && naam2 == ""){
+      namenBlauw = `<p class="c-scoreboard-naam">Team Blauw</p>`
+      name3 = ""
+      name4 = ""
+    }
+    teamBlauw.innerHTML = namenBlauw;
+  }
+}
 
-const listenToSocket = function(){
-    
-    
-    
-    // socket.on('B2F_tiebrake', function(){
-    //     scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
-    //     scoreboardPuntenHeader.innerHTML = "Tiebrake";
-    // });
-    
-    // socket.on('B2F_punten', function(){
-    //     scoreboardPuntenHeader = document.querySelector(".js-punten-tekst");
-    //     scoreboardPuntenHeader.innerHTML = "Punten";
-    // });
-
-    
-};
+// Test full Screen *********************************************************************************
 
 // function goFullscreen() {
 //     // Must be called as a result of user interaction to work

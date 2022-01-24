@@ -84,23 +84,23 @@ def on_message(client, userdata, msg):
             # print("rood")
         if bericht == "puntrood":
             menu(1)
-            # send_scorebord("rood")
         if bericht == "puntblauw":
             menu(2)
-            # send_scorebord("rood")
         if bericht == "minpunt":
             remove_point()
-            # send_scorebord("blauw")
+        if bericht == "nieuw":
+            nieuw_game()
+        # if bericht == "":
+        #     set_name()
 
 client = mqtt.Client() #maak een nieuwe mqtt client aan
 def run_mqtt():
     # print("connecting")
-    
+     
     client.on_connect = on_connect 
     client.on_message = on_message
-    client.connect('192.168.10.10', 1883, 60) #geef hier het IP adres in
-    # client.connect('127.0.0.1', 1883, 60) #geef hier het IP adres in
-    # send_scorebord("blauw")
+    # client.connect('192.168.10.10', 1883, 60) # mqtt broker py
+    client.connect('127.0.0.1', 1883, 60) # test mqtt broker
     client.loop_forever()
 
 # code met socket**************************************************************************************************************
@@ -115,18 +115,16 @@ def run_mqtt():
 
 def chose_side(kleur):
     Json = {"type" : "opslag", "side" : kleur}
-    # print(Json)
     message = json.dumps(Json)
-    # print(message)
     send_scorebord(message)
 
 def nieuw_game():
-    global tiebrake,total_sets,game1,game2,game3,game_blauw,game_rood,set_blauw,set_rood,point_rood,point_blauw,tiebrake_blauw,tiebrake_rood,previous_games,previous_points
+    global tiebrake,total_sets,game1,game2,game3,game_blauw,game_rood,set_blauw,set_rood,point_rood,point_blauw,tiebrake_blauw,tiebrake_rood,previous_games,previous_points,last_points
     tiebrake = False
     total_sets = 0
-    game1 = 0
-    game2 = 0
-    game3 = 0
+    game1 = {}
+    game2 = {}
+    game3 = {}
     game_blauw = 0
     game_rood = 0
     set_rood = 0
@@ -143,14 +141,14 @@ def nieuw_game():
     message = json.dumps({"type" : "set", "rood" : set_rood, "blauw" : set_blauw })
     send_scorebord(message)
     message = json.dumps({"type" : "background", "background" : "Punten" })
+    # send_scorebord(message)
+    # message = json.dumps({"type" : "opslag", "side" : "geen"})
     send_scorebord(message)
     send_message("nieuw game")
     previous_games = []
     previous_points = []
-    # previous_games.append([game_rood,game_blauw])
-    # previous_points.append([point_rood,point_blauw,"points"])
-    # previous_points.append([tiebrake_rood,tiebrake_blauw,"tiebrake"])
-    
+    last_points=[]
+
 def check_set(rood,blauw):
     global set_blauw,set_rood,total_sets,game1,game2,game3
     total_sets += 1
@@ -168,8 +166,18 @@ def check_set(rood,blauw):
         print(game3)
     if set_rood == 2:
         print("rood wint")
+        send_message("gedaan")
+        message = json.dumps({"type" : "punten", "rood" : set_rood, "blauw" : set_blauw})
+        send_scorebord(message)
+        message = json.dumps({"type" : "gedaan", "side" : "rood"})
+        send_scorebord(message)
     if set_blauw == 2:
         print("blauw wint")
+        send_message("gedaan")
+        message = json.dumps({"type" : "punten", "rood" : set_rood, "blauw" : set_blauw})
+        send_scorebord(message)
+        message = json.dumps({"type" : "gedaan", "side" : "blauw"})
+        send_scorebord(message)
     message = json.dumps({"type" : "set", "rood" : set_rood, "blauw" : set_blauw })
     send_scorebord(message)
 
@@ -204,6 +212,7 @@ def remove_point():
     global last_points,point_rood,point_blauw,game_rood,game_blauw,set_rood,set_blauw,tiebrake_rood,tiebrake_blauw,tiebrake,previous_games,previous_points,total_sets,game1,game2,game3
     if last_points:
         print(last_points[-1])
+        print(previous_games)
         if tiebrake == True:
             if last_points[-1] == "red":
                 if tiebrake_rood != 0:
@@ -262,12 +271,14 @@ def remove_point():
                         message = json.dumps({"type" : "background", "background" : "Tiebrake" })
                         send_scorebord(message)
                         tiebrake = True
+                        tiebrake_rood = previous_points[-1][0]
+                        tiebrake_blauw = previous_points[-1][1]
                     else:
                         message = json.dumps({"type" : "background", "background" : "Punten" })
                         send_scorebord(message)
                         tiebrake = False
-                    point_rood = previous_points[-1][0]
-                    point_blauw = previous_points[-1][1]
+                        point_rood = previous_points[-1][0]
+                        point_blauw = previous_points[-1][1]
                 elif game_rood == 0:
                     if set_rood != 0:
                         set_rood -= 1
@@ -298,9 +309,14 @@ def remove_point():
                 previous_points.pop()
                 message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
                 send_scorebord(message)
-            Json = {"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}
-            message = json.dumps(Json)
-            send_scorebord(message)
+            if tiebrake:
+                Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                message = json.dumps(Json)
+                send_scorebord(message)
+            else:    
+                Json = {"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}
+                message = json.dumps(Json)
+                send_scorebord(message)
         elif last_points[-1] == "blue":
             print("remove blue")
             if point_blauw == "adv":
@@ -376,6 +392,7 @@ def menu(keuze):
                 set_rood += 1
                 previous_games.append([game_rood,game_blauw])
                 game_rood += 1
+                tiebrake_rood -= 1
                 previous_points.append([tiebrake_rood,tiebrake_blauw,"tiebrake"])
                 check_set(game_rood,game_blauw)
                 tiebrake_rood=0
@@ -397,6 +414,7 @@ def menu(keuze):
                 set_blauw += 1
                 previous_games.append([game_rood,game_blauw])
                 game_blauw += 1
+                tiebrake_blauw -= 1
                 previous_points.append([tiebrake_rood,tiebrake_blauw,"tiebrake"])
                 check_set(game_rood,game_blauw)
                 tiebrake= False
@@ -404,7 +422,6 @@ def menu(keuze):
                 tiebrake_blauw=0
                 game_blauw = 0
                 game_rood = 0
-                # socketio.emit("B2F_punten", )
                 message = json.dumps({"type" : "background", "background" : "Punten" })
                 send_scorebord(message)
                 message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
@@ -443,7 +460,6 @@ def menu(keuze):
         # message = json.dumps({"type" : "punten", "rood" : point_rood, "blauw" : point_blauw})
         # send_scorebord(message)
         send_scorebord(json.dumps({"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}))
-        # socketio.emit("B2F_verandering_punten", {'red':  point_rood, "blue": point_blauw })
         print("item sent")
         last_points.append("red") 
         print(last_points)
@@ -474,32 +490,10 @@ def menu(keuze):
         Json = {"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}
         message = json.dumps(Json)
         send_scorebord(message)
-        # socketio.emit("B2F_verandering_punten", {'red':  point_rood, "blue": point_blauw })
         print("item sent")   
         last_points.append("blue") 
         print(last_points)
-    if keuze == 3:
-            nieuw_game()
-    if keuze == 4:
-        remove_point()
-    elif keuze == 9:
-        exit() 
 
-def run():
-    keuze = 0
-    while keuze  != 9:       
-        print("Maak uw keuze:")        
-        print("1. punt rood")        
-        print("2. punt blauw")                
-        print("3. Nieuw Game")                
-        print("4. remove last point")                
-        print("9. Exit")        
-        try:
-            keuze = int(input())
-            # print(keuze)
-            menu(keuze)
-        except Exception as ex:
-            print(ex)
 
 if __name__ == '__main__':
     # x = threading.Thread(target=run, args=())
