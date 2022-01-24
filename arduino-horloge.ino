@@ -29,8 +29,8 @@ void setup()
   client.begin("192.168.10.10", net);
   client.onMessage(messageReceived);
 
-  connect();
   startStyle();
+  connect();
 
     Serial.print("Connect to pi ");
   if (incomingString == "check"){
@@ -126,17 +126,18 @@ void messageReceived(String &topic, String &payload) {
 }
 
 // STYLES ----------------------------------------------------------------------------------------------------
+
 void chooseTeam() {
   whiteScreen();
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
   lv_label_set_text(text, "Select the team that starts");
-  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -70);
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -60);
 
   //btn 1
   lv_obj_t *label;
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(btn1, teamBlauw);
-  lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 10, 0);
+  lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 0, 20);
   //label btn1
   label = lv_label_create(btn1, NULL);
   lv_label_set_text(label, "TEAM BLAUW");
@@ -145,8 +146,8 @@ void chooseTeam() {
   //style btn1
   lv_color_t light_blue = lv_color_hex(0x1E1EFE);
   lv_color_t dark_blue = lv_color_hex(0x00007A);
-  lv_obj_set_size(btn1, 105, 105);
-  lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 105);
+  lv_obj_set_size(btn1, 122, 122);
+  lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 0);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
   lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
@@ -155,7 +156,7 @@ void chooseTeam() {
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(btn2, teamRood);
-  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_RIGHT_MID , 15, 0);
+  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_RIGHT_MID , 12, 20);
   //label btn2
   label = lv_label_create(btn2, NULL);
   lv_label_set_text(label, "TEAM ROOD");
@@ -164,8 +165,8 @@ void chooseTeam() {
   //style btn2
   lv_color_t light_red = lv_color_hex(0xFE1E1E);
   lv_color_t dark_red = lv_color_hex(0x7A0000);
-  lv_obj_set_size(btn2, 105, 105);
-  lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 105);
+  lv_obj_set_size(btn2, 122, 122);
+  lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 0);
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_RED);
 
@@ -183,7 +184,7 @@ void startStyle() {
   lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
 
-  lv_obj_align(text, NULL, LV_ALIGN_CENTER, -25, -70);
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, -27, -70);
 
   lv_label_set_text(text, "Connecting...");
   lv_obj_set_style_local_text_color(text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
