@@ -213,10 +213,14 @@ def remove_point():
     if last_points:
         print(last_points[-1])
         print(previous_games)
+        print(previous_points)
         if tiebrake == True:
             if last_points[-1] == "red":
                 if tiebrake_rood != 0:
                     tiebrake_rood -= 1
+                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                    message = json.dumps(Json)
+                    send_scorebord(message)
                 else:
                     point_rood = previous_points[-1][0]
                     point_blauw = previous_points[-1][1]
@@ -229,11 +233,16 @@ def remove_point():
                     send_scorebord(message)
                     message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
                     send_scorebord(message) 
+                    message = json.dumps({"type" : "punten", "rood" : point_rood, "blauw" : point_blauw })
+                    send_scorebord(message)
                     # previous_games.pop()
                     previous_points.pop()
             elif last_points[-1] == "blue":
                 if tiebrake_blauw != 0:
                     tiebrake_blauw -= 1
+                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                    message = json.dumps(Json)
+                    send_scorebord(message)
                 else:
                     point_rood = previous_points[-1][0]
                     point_blauw = previous_points[-1][1]
@@ -247,12 +256,11 @@ def remove_point():
                     send_scorebord(message)
                     message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
                     send_scorebord(message)
+                    message = json.dumps({"type" : "punten", "rood" : point_rood, "blauw" : point_blauw })
+                    send_scorebord(message)
                     # previous_games.pop()
                     previous_points.pop()
             #         socketio.emit("B2F_verandering_game", {'red':  game_rood, "blue": game_blauw })
-            Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
-            message = json.dumps(Json)
-            send_scorebord(message)
             # socketio.emit("B2F_verandering_punten", {'red':  tiebrake_rood, "blue": tiebrake_blauw })
         elif last_points[-1] == "red":
             print("remove red")

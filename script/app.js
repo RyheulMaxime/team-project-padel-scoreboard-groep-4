@@ -97,10 +97,6 @@ const changePoints = function( puntenRood, puntenBlauw){
     blauw.innerHTML = puntenBlauw;
 
     if(tiebreak == true){
-      // console.log(begin_tiebreak)
-      // if(begin_tiebreak == 0){
-        
-      // }
       if(begin_tiebreak == 1){
         begin_tiebreak = 2
         if(opslag.classList.contains("is-team-2")){
@@ -112,7 +108,8 @@ const changePoints = function( puntenRood, puntenBlauw){
       }else if(begin_tiebreak == 2){
         begin_tiebreak = 3
         spel.classList.remove("is-left")
-      }else if(begin_tiebreak == 3){
+      }else if(begin_tiebreak >= 3){
+        begin_tiebreak += 1
         if(count_tiebreak == 0){
           count_tiebreak = 1
           if(opslag.classList.contains("is-team-2")){
@@ -134,6 +131,7 @@ const changePoints = function( puntenRood, puntenBlauw){
     }
   }
 }
+
 const changeGame = function(gameRood, gameBlauw){
   game_rood = document.querySelector(".js-game-red");
   game_blauw = document.querySelector(".js-game-blue");
