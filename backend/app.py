@@ -56,12 +56,12 @@ def send_message(message):
 
 def send_scorebord(message):
     # data = 'pi hier'
-    client.publish("/scorebord1", message,qos=2)
+    client.publish("/scoreboard1", message,qos=2)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc)) #als er een connectie is 
     client.subscribe("/veld1") #subscribe met een topic
-    client.subscribe("/scorebord1") #subscribe met een topic
+    client.subscribe("/scoreboard1") #subscribe met een topic
 
 def on_message(client, userdata, msg):
     if msg.topic == "/veld1":
@@ -103,15 +103,7 @@ def run_mqtt():
     client.connect('127.0.0.1', 1883, 60) # test mqtt broker
     client.loop_forever()
 
-# code met socket**************************************************************************************************************
-# @app.route('/')
-# def hallo():
-#     return "Server is running, er zijn momenteel geen API endpoints beschikbaar."
-
-# @socketio.on('connect')
-# def connect():
-#     print("A new client connects")
-
+# code**************************************************************************************************************
 
 def chose_side(kleur):
     Json = {"type" : "opslag", "side" : kleur}
@@ -133,10 +125,11 @@ def nieuw_game():
     tiebrake_rood = 0
     point_rood = "0"
     point_blauw = "0"
+    message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
+    send_scorebord(message)
+    send_scorebord(json.dumps({"type" : "nieuw"}))
     Json = {"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}
     message = json.dumps(Json)
-    send_scorebord(message)
-    message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
     send_scorebord(message)
     message = json.dumps({"type" : "set", "rood" : set_rood, "blauw" : set_blauw })
     send_scorebord(message)
@@ -218,7 +211,7 @@ def remove_point():
             if last_points[-1] == "red":
                 if tiebrake_rood != 0:
                     tiebrake_rood -= 1
-                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw,"minpunt":"true"}
                     message = json.dumps(Json)
                     send_scorebord(message)
                 else:
@@ -240,7 +233,7 @@ def remove_point():
             elif last_points[-1] == "blue":
                 if tiebrake_blauw != 0:
                     tiebrake_blauw -= 1
-                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                    Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw,"minpunt":"true" }
                     message = json.dumps(Json)
                     send_scorebord(message)
                 else:
@@ -318,7 +311,7 @@ def remove_point():
                 message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
                 send_scorebord(message)
             if tiebrake:
-                Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw }
+                Json = {"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw,"minpunt":"true" }
                 message = json.dumps(Json)
                 send_scorebord(message)
             else:    
@@ -379,7 +372,7 @@ def remove_point():
                 message = json.dumps({"type" : "game", "rood" : game_rood, "blauw" : game_blauw })
                 send_scorebord(message)
             if tiebrake_rood != 0 or tiebrake_blauw != 0:
-                message = json.dumps({"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw})
+                message = json.dumps({"type" : "punten", "rood" : tiebrake_rood, "blauw" : tiebrake_blauw,"minpunt":"true"})
                 send_scorebord(message)
             else:
                 Json = {"type" : "punten", "rood" : point_rood, "blauw" : point_blauw}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -9,6 +9,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="./img/favicon/vs.ico" />
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/screen.css" />
+    <script src="./script/src/paho-mqtt.js"></script>
+    <script src="./script/name.js"></script>
 
 </head>
     <body class="c-body">
@@ -21,13 +23,13 @@
         <div class=" c-team">
             <div class="c-form-field c-team-namen">
                 <div class="c-team-naam">
-                    <input class="c-input" type="text" name="rood1" id="rood1"  required>
+                    <input class="c-input js-naam1" type="text" name="rood1" id="rood1"  required>
                 </div>
                 <div class="c-team-en">
                     en
                 </div>
                 <div class="c-team-naam">
-                    <input class="c-input" type="text" name="rood1" id="rood1"  required>
+                    <input class="c-input js-naam2" type="text" name="rood2" id="rood2"  required>
                 </div>
             </div>
             <div class="c-racket">
@@ -578,13 +580,13 @@
         <div class="c-team">
             <div class="c-team-namen">
                 <div class="c-team-naam">
-                    <input class="c-input" type="text" name="rood1" id="rood1"  required>
+                    <input class="c-input js-naam3" type="text" name="blauw1" id="blauw1"  required>
                 </div>
                 <div class="c-team-en">
                     en
                 </div>
                 <div class="c-team-naam">
-                    <input class="c-input" type="text" name="rood1" id="rood1"  required>
+                    <input class="c-input js-naam4" type="text" name="blauw2" id="blauw2"  required>
                 </div>
             </div>
             <div class="c-racket">
@@ -1137,7 +1139,7 @@
         
     </div>
     <div class="c-button">
-        <button class="o-button-reset c-button-style">
+        <button class="o-button-reset c-button-style js-button">
             Opslaan
         </button>
 
