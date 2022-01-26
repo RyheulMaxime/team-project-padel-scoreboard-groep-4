@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard</title>
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/screen.css">
+    <script src="./script/src/paho-mqtt.js"></script>
+    <script src="./script/app.js"></script>
+</head>
+<body class="c-scoreboard js-opslag">
+    <div class="c-scoreboard-red">
+        <div class="c-scoreboard-red-team">
+            <div class="c-scoreboard-team-naam js-team-red">
+                <p class="c-scoreboard-naam">TEAM 1</p>
+            </div>
+            <div class="c-scoreboard-red-serve">
+                <div class="c-scoreboard-serve-left">L</div>
+                <div class="c-scoreboard-serve-active"></div>
+                <div class="c-scoreboard-serve-right">R</div>
+            </div>
+        </div>
+        <div class="c-scoreboard-red-points js-point-red">0</div>
+    </div>
+    <div class="c-scoreboard-blue">
+        <div class="c-scoreboard-blue-team">
+            <div class="c-scoreboard-team-naam js-team-blue">
+                <p class="c-scoreboard-naam">TEAM 2</p>
+            </div>
+            <div class="c-scoreboard-blue-serve">
+                <div class="c-scoreboard-serve-left">L</div>
+                <div class="c-scoreboard-serve-active"></div>
+                <div class="c-scoreboard-serve-right">R</div>
+            </div>
+        </div>
+        <div class="c-scoreboard-blue-points js-point-blue">0</div>
+    </div>
+    <div class="c-extras">
+        <div class="c-extras-set">
+            <p class="c-extras-text">Set</p>
+            <p class="c-extras-set_red js-set-red">0</p>
+        </div>
+        <div class="c-extras-games">
+            <p class="c-extras-games-red js-game-red">0</p>
+            <div class="c-extras-games-mid">
+                <p class="c-extras-text-tiebrake">
+                    Tiebreak
+                </p>
+                <p class="c-extras-text-game">
+                    Games
+                </p>
+            </div>
+            <p class="c-extras-games-blue js-game-blue">0</p>
+        </div>
+        <div class="c-extras-set">
+            <p class="c-extras-text">Set</p>
+            <p class="c-extras-set_blue js-set-blue">0</p>
+        </div>
+    </div>
+    <div class="c-info">
+        <div class="c-info-winner js-winner">Rood is de winnaar</div>
+        <div class="c-info-sponsor">
+            <img src="./img/sponsor/Image 3.png" alt="adidas">
+            <img src="./img/sponsor/Image 4.png" alt="adidas">
+            <img src="./img/sponsor/Image 5.png" alt="adidas">
+            <img src="./img/sponsor/Image 4.png" alt="adidas">
+        </div>
+        <div class="c-info-logo">
+            <img src="./img/logo/Image 1.png" alt="">
+        </div>
+    </div>
+</body>
+</html>
