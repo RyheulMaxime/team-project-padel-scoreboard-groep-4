@@ -62,17 +62,21 @@ void loop()
 
     incomingString = Serial.readString();
     Serial.println("incomming-----------------------------------");
+    Serial.println(incomingString);
 
   }
-
+  if (incomingString == "nieuw"){
+    Serial.println("het werkt hij ontvnagest");
+    charPage = '4';
+  }
   if (incomingString == "check") {
     piConnected = true;
     startStyle();
 
   }
-  if (incomingString == "startspel") {
-    charPage = '2';
-  }
+ // if (incomingString == "startspel") {
+  //  charPage = '2';
+//  }
 
   switch (charPage) {
     case '1':
