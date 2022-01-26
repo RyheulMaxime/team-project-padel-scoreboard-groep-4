@@ -1,6 +1,7 @@
 
 
-var client = new Paho.MQTT.Client('127.0.0.1', 8888, 'namen');
+// var client = new Paho.MQTT.Client('127.0.0.1', 8888, 'namen');
+var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'namen');
 var name1="",name2="",name3="",name4= "";
 var tiebreak = false;
 var begin_tiebreak = 0;

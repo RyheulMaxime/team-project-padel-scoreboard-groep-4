@@ -1,14 +1,7 @@
 from ctypes.wintypes import PINT
-# from socket import socket
 import sys
 from traceback import print_last
-# from flask import Flask, jsonify
-# from flask_socketio import SocketIO, send, emit
-# from flask_cors import CORS
 import pandas
-# import aedes
-# from aedes.remote_sensing_utils import get_satellite_measures_from_AOI, reverse_geocode_points, reverse_geocode_points
-# from aedes.remote_sensing_utils import perform_clustering, visualize_on_map
 import time
 import threading
 from six.moves import input
@@ -56,12 +49,13 @@ def send_message(message):
 
 def send_scorebord(message):
     # data = 'pi hier'
-    client.publish("/scoreboard1", message,qos=2)
+    client.publish("/scoreboard1", message,qos=1)
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc)) #als er een connectie is 
     client.subscribe("/veld1") #subscribe met een topic
     client.subscribe("/scoreboard1") #subscribe met een topic
+    print("done")
 
 def on_message(client, userdata, msg):
     if msg.topic == "/veld1":
@@ -90,8 +84,6 @@ def on_message(client, userdata, msg):
             remove_point()
         if bericht == "nieuw":
             nieuw_game()
-        # if bericht == "":
-        #     set_name()
 
 client = mqtt.Client() #maak een nieuwe mqtt client aan
 def run_mqtt():
@@ -99,8 +91,9 @@ def run_mqtt():
      
     client.on_connect = on_connect 
     client.on_message = on_message
-    # client.connect('192.168.10.10', 1883, 60) # mqtt broker py
-    client.connect('127.0.0.1', 1883, 60) # test mqtt broker
+    # client.connect('172.30.248.80', 1883, 60) # mqtt broker py
+    client.connect('192.168.10.10', 1883, 60) # mqtt broker py
+    # client.connect('127.0.0.1', 1883, 60) # test mqtt broker
     client.loop_forever()
 
 # code**************************************************************************************************************

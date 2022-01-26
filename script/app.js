@@ -4,9 +4,9 @@
 
 // mqtt ******************************************************************************************************
 // mqtt broker py
-// var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'javascript');
+var client = new Paho.MQTT.Client('192.168.10.10', 8888, 'javascript');
 // test mqtt broker
-var client = new Paho.MQTT.Client('127.0.0.1', 8888, 'javascript');
+// var client = new Paho.MQTT.Client('127.0.0.1', 8888, 'javascript');
 var name1="",name2="",name3="",name4= "";
 var tiebreak = false;
 var begin_tiebreak = 0;
@@ -27,9 +27,7 @@ function onConnect() {
   console.log("onConnect");
   client.subscribe("/scoreboard1");
   client.subscribe("/namen1");
-//   message = new Paho.MQTT.Message("Hello");
-//   message.destinationName = "/scoreboard1";
-//   client.send(message);
+  // console.log("sub")
 }
 
 // called when the client loses its connection
@@ -41,7 +39,7 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-  // console.log(message.payloadString);
+  
   var json = JSON.parse(message.payloadString);
   console.log(json);
   if (json.type == "opslag"){
