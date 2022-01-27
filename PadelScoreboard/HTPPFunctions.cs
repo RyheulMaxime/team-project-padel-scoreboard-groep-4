@@ -53,6 +53,7 @@ namespace PadelScoreboard
             }
         }
 
+
         [FunctionName("GetSponsors")]
         public async Task<IActionResult> GetSponsors([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "sponsors")] HttpRequest req,
             ILogger log)
@@ -64,6 +65,44 @@ namespace PadelScoreboard
 
                 var sql = "SELECT * FROM sponsors";
                 QueryDefinition queryDefinition = new QueryDefinition(sql);
+
+                List<SponsorInfo> sponsors = new List<SponsorInfo>();
+                SponsorInfo sponsorInfo = new SponsorInfo();
+
+                using (FeedIterator<SponsorInfo> feedIterator = container.GetItemQueryIterator<SponsorInfo>(queryDefinition))
+                {
+                    while (feedIterator.HasMoreResults)
+                    {
+                        FeedResponse<SponsorInfo> result = await feedIterator.ReadNextAsync();
+                        foreach (var info in result)
+                        {
+                            sponsorInfo = info;
+                            sponsors.Add(sponsorInfo);
+                        }
+                    }
+                }
+
+                return new OkObjectResult(sponsors);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [FunctionName("GetSponsorsByClubId")]
+        public async Task<IActionResult> GetSponsorsByClubId([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "sponsors/{clubId}")] HttpRequest req,
+            string clubId,
+            ILogger log)
+        {
+            try
+            {
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "sponsors");
+
+                var sql = "SELECT * FROM sponsors s WHERE s.clubid = @id";
+                QueryDefinition queryDefinition = new QueryDefinition(sql).WithParameter("@id", clubId);
 
                 List<SponsorInfo> sponsors = new List<SponsorInfo>();
                 SponsorInfo sponsorInfo = new SponsorInfo();
