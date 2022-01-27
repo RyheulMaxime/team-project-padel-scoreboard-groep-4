@@ -10,6 +10,9 @@ namespace PadelScoreboard.Models
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
+        [JsonProperty("clubid")]
+        public string ClubId { get; set; }
+
         [JsonProperty("naam")]
         public string Naam { get; set; }
 

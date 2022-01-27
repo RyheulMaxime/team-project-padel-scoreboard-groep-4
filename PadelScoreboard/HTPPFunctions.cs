@@ -15,6 +15,10 @@ namespace PadelScoreboard
 {
     public class HTPPFunctions
     {
+        // ****************************************************************************************************************************************************************
+        // Sponsoren
+        // ****************************************************************************************************************************************************************
+
         [FunctionName("GetSponsor")]
         public async Task<IActionResult> GetSponsor([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "sponsor/{sponsorsID}")] HttpRequest req,
             string sponsorsID,
@@ -98,7 +102,7 @@ namespace PadelScoreboard
 
                 CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
                 var container = client.GetContainer("Padel", "sponsors");
-                await container.CreateItemAsync<SponsorInfo>(newSponsor);
+                await container.CreateItemAsync<SponsorInfo>(newSponsor, new PartitionKey(newSponsor.ClubId));
 
                 return new OkObjectResult(newSponsor);
             }
@@ -177,8 +181,173 @@ namespace PadelScoreboard
             }
         }
 
+        // ****************************************************************************************************************************************************************
+        // Clubs
+        // ****************************************************************************************************************************************************************
 
+        [FunctionName("GetClub")]
+        public async Task<IActionResult> GetClub([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "club/{clubID}")] HttpRequest req,
+           string clubID,
+           ILogger log)
+        {
+            try
+            {
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "clubs");
 
+                var sql = "SELECT * FROM clubs s WHERE s.id = @id";
+                QueryDefinition queryDefinition = new QueryDefinition(sql).WithParameter("@id", clubID);
+                FeedIterator<ClubInfo> feedIterator = container.GetItemQueryIterator<ClubInfo>(queryDefinition);
+
+                ClubInfo clubInfo = new ClubInfo();
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<ClubInfo> result = await feedIterator.ReadNextAsync();
+                    foreach (var info in result)
+                    {
+                        clubInfo = info;
+                        break;
+                    }
+                }
+                return new OkObjectResult(clubInfo);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [FunctionName("GetClubs")]
+        public async Task<IActionResult> GetClubs([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "clubs")] HttpRequest req,
+            ILogger log)
+        {
+            try
+            {
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "clubs");
+
+                var sql = "SELECT * FROM clubs";
+                QueryDefinition queryDefinition = new QueryDefinition(sql);
+
+                List<ClubInfo> clubs = new List<ClubInfo>();
+                ClubInfo clubInfo = new ClubInfo();
+
+                using (FeedIterator<ClubInfo> feedIterator = container.GetItemQueryIterator<ClubInfo>(queryDefinition))
+                {
+                    while (feedIterator.HasMoreResults)
+                    {
+                        FeedResponse<ClubInfo> result = await feedIterator.ReadNextAsync();
+                        foreach (var info in result)
+                        {
+                            clubInfo = info;
+                            clubs.Add(clubInfo);
+                        }
+                    }
+                }
+                return new OkObjectResult(clubs);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [FunctionName("CreateClub")]
+        public async Task<IActionResult> CreateClub([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "clubs")] HttpRequest req,
+          ILogger log)
+        {
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                ClubInfo newClub = JsonConvert.DeserializeObject<ClubInfo>(requestBody);
+                newClub.Id = Guid.NewGuid();
+
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "clubs");
+                await container.CreateItemAsync<ClubInfo>(newClub);
+
+                return new OkObjectResult(newClub);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [FunctionName("UpdateClub")]
+        public async Task<IActionResult> UpdateClub([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "club/{clubId}")] HttpRequest req,
+          string clubId,
+          ILogger log)
+        {
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                ClubInfo updateClub = JsonConvert.DeserializeObject<ClubInfo>(requestBody);
+
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "clubs");
+
+                var sql = "SELECT * FROM sponsors s WHERE s.id = @id";
+
+                QueryDefinition queryDefinition = new QueryDefinition(sql).WithParameter("@id", clubId);
+                FeedIterator<ClubInfo> feedIterator = container.GetItemQueryIterator<ClubInfo>(queryDefinition);
+
+                ClubInfo clubInfo = null;
+
+                while (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<ClubInfo> result = await feedIterator.ReadNextAsync();
+                    foreach (var info in result)
+                    {
+                        clubInfo = info;
+                        break;
+                    }
+                }
+
+                clubInfo.Naam = updateClub.Naam;
+                clubInfo.Logo = updateClub.Logo;
+                clubInfo.Straat = updateClub.Straat;
+                clubInfo.Stad = updateClub.Stad;
+                clubInfo.Beheerder = updateClub.Beheerder;
+                clubInfo.Email = updateClub.Email;
+                clubInfo.Passwoord = clubInfo.Passwoord;
+
+                await container.ReplaceItemAsync<ClubInfo>(clubInfo, clubInfo.Id.ToString());
+
+                return new OkObjectResult(clubInfo);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [FunctionName("DeleteClub")]
+        public async Task<IActionResult> DeleteClub([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "club/{clubId}")] HttpRequest req,
+            string clubId,
+            ILogger log)
+        {
+            try
+            {
+                CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
+                var container = client.GetContainer("Padel", "clubs");
+
+                await container.DeleteItemAsync<Task>(clubId, new PartitionKey(clubId));
+
+                return new OkObjectResult("verwijdered");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex.Message);
+
+                return new StatusCodeResult(500);
+            }
+        }
 
     }
 }
