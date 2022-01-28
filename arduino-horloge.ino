@@ -32,18 +32,18 @@ void setup()
   startStyle();
   connect();
 
-    Serial.print("Connect to pi ");
-  if (incomingString == "check"){
+  Serial.print("Connect to pi ");
+  if (incomingString == "check") {
     loop();
-  }else{
+  } else {
     Serial.print(".");
-    
+
     incomingString = Serial.readString();
     send_message("connect");
     delay(1000);
   }
-  
-    Serial.println(" ");
+
+  Serial.println(" ");
 
 }
 
@@ -65,18 +65,17 @@ void loop()
     Serial.println(incomingString);
 
   }
-  if (incomingString == "nieuw"){
+  if (incomingString == "gedaan") {
     Serial.println("het werkt hij ontvnagest");
-    charPage = '4';
+    charPage = '5';
+    incomingString = "";
   }
   if (incomingString == "check") {
     piConnected = true;
     startStyle();
+    incomingString = "";
 
   }
- // if (incomingString == "startspel") {
-  //  charPage = '2';
-//  }
 
   switch (charPage) {
     case '1':
@@ -90,14 +89,19 @@ void loop()
       break;
     case '4':
       chooseTeam();
+    case '5':
+      nieuwSpel();
+      charPage='0';
+      Serial.println("hello");
       break;
   }
 
 
+    delay(100);
 }
 // send message----------------------------------------------------------------------------------
-void send_message(String msg){
-  client.publish("/veld1",msg);
+void send_message(String msg) {
+  client.publish("/veld1", msg);
 }
 //connect ----------------------------------------------------------------
 void connect() {
@@ -116,6 +120,7 @@ void connect() {
   Serial.println("\nconnected!");
 
   client.subscribe("/veld1");
+  client.subscribe("/namen1");
   // client.unsubscribe("/hello");
 }
 // Receive ---------------------------------------------------------------------------------------
@@ -134,7 +139,7 @@ void messageReceived(String &topic, String &payload) {
 void chooseTeam() {
   whiteScreen();
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
-  lv_label_set_text(text, "Select the team that starts");
+  lv_label_set_text(text, "Selecteer het team dat start");
   lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -60);
 
   //btn 1
@@ -144,18 +149,21 @@ void chooseTeam() {
   lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 0, 20);
   //label btn1
   label = lv_label_create(btn1, NULL);
-  lv_label_set_text(label, "TEAM BLAUW");
+  lv_label_set_text(label, "TEAM ROOD");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn1
+  lv_color_t light_red = lv_color_hex(0xFE1E1E);
+  lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_color_t light_blue = lv_color_hex(0x1E1EFE);
   lv_color_t dark_blue = lv_color_hex(0x00007A);
   lv_obj_set_size(btn1, 122, 122);
   lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
-  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
-  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
-  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_blue);
+  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_RED);
+
+  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
 
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
@@ -163,28 +171,38 @@ void chooseTeam() {
   lv_obj_align(btn2, NULL,  LV_ALIGN_IN_RIGHT_MID , 12, 20);
   //label btn2
   label = lv_label_create(btn2, NULL);
-  lv_label_set_text(label, "TEAM ROOD");
+  lv_label_set_text(label, "TEAM BLAUW");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn2
-  lv_color_t light_red = lv_color_hex(0xFE1E1E);
-  lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_obj_set_size(btn2, 122, 122);
   lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
-  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_RED);
-
-  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
-  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
+  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
+  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_blue);
 }
+void nieuwSpel() {
+  whiteScreen();
+  lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(text, "Het spel is beeindigd");
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -60);
 
+  lv_obj_t *label;
+  lv_obj_t *btnNieuwGame = lv_btn_create(lv_scr_act(), NULL);
+  lv_obj_align(btnNieuwGame, NULL,  LV_ALIGN_CENTER, 0, 0);
+  label = lv_label_create(btnNieuwGame, NULL);
+  lv_label_set_text(label, "NIEUW SPEL");
+  lv_obj_set_event_cb(btnNieuwGame, event_handlerNieuwGame);
+
+}
 void startStyle() {
   whiteScreen();
   lv_obj_t *label;
   lv_obj_t *btnStartGame = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_align(btnStartGame, NULL,  LV_ALIGN_CENTER, 0, 0);
   label = lv_label_create(btnStartGame, NULL);
-  lv_label_set_text(label, "START GAME");
+  lv_label_set_text(label, "START SPEL");
   lv_obj_set_event_cb(btnStartGame, event_handlerStartGame);
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
 
@@ -196,11 +214,7 @@ void startStyle() {
 
     lv_label_set_text(text, "Connected");
     lv_obj_set_style_local_text_color(text, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GREEN);
-
   }
-
-
-
 }
 
 void whiteScreen() {
@@ -226,18 +240,22 @@ void gameStyle() {
   lv_obj_align(btn1, NULL,  LV_ALIGN_IN_TOP_LEFT, 0, 0);
   //label btn1
   label = lv_label_create(btn1, NULL);
-  lv_label_set_text(label, "TEAM BLAUW");
+  lv_label_set_text(label, "TEAM ROOD");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn1
+  
+  lv_color_t light_red = lv_color_hex(0xFE1E1E);
+  lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_color_t light_blue = lv_color_hex(0x1E1EFE);
   lv_color_t dark_blue = lv_color_hex(0x00007A);
   lv_obj_set_size(btn1, 120, 250);
   lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 1);
-  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
-  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
-  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
-  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_blue);
+  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_RED);
+
+  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_obj_set_style_local_bg_color(btn1, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
 
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
@@ -245,31 +263,39 @@ void gameStyle() {
   lv_obj_align(btn2, NULL,  LV_ALIGN_IN_TOP_RIGHT, 10, 0);
   //label btn2
   label = lv_label_create(btn2, NULL);
-  lv_label_set_text(label, "TEAM ROOD");
+  lv_label_set_text(label, "TEAM BLAUW");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn2
-  lv_color_t light_red = lv_color_hex(0xFE1E1E);
-  lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_obj_set_size(btn2, 120, 250);
   lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 1);
-  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
-  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_RED);
-
-  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
-  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_red);
+  
+  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+  lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
+  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
+  lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_PRESSED, light_blue);
 
 }
 //EVENT HANDLERS ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void event_handlerNieuwGame(lv_obj_t *obj, lv_event_t event)
+{ if (event == LV_EVENT_CLICKED)
+  {
+    ttgo->motor->onec();
+    delay(100);
+    send_message("nieuw");
+    chooseTeam();
+
+  }
+}
+
 void event_handlerStartGame(lv_obj_t *obj, lv_event_t event)
 {
   if (event == LV_EVENT_CLICKED)
   {
-    printf("START GAME\n");
     ttgo->motor->onec();
     delay(100);
     send_message("startgame");
-    charPage = '4';
+    chooseTeam();
 
   }
 }
