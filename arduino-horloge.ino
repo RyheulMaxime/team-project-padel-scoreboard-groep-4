@@ -6,11 +6,10 @@
 
 TTGOClass *ttgo;
 String incomingString;
-int teamrood;
-int teamblauw;
 const char* ssid = SECRET_SSID;
 const char* password = SECRET_PASS;
-bool piConnected;
+bool piConnected = false;
+char charloop;
 
 char charPage;
 WiFiClient net;
@@ -33,19 +32,27 @@ void setup()
   connect();
 
   Serial.print("Connect to pi ");
-  if (incomingString == "check") {
-    loop();
-  } else {
-    Serial.print(".");
+  Serial.println(incomingString);
+  charloop = '1';
+  switch (charloop) {
+    Serial.println("loop");
+    case '1':
+      if (incomingString != "check") {
+        send_message("connect");
+        incomingString = Serial.readString();
+      }
+      if (incomingString == "check") {
+        piConnected = true;
+        charloop = '2';
+      }
+    case '2':
+      loop();
 
-    incomingString = Serial.readString();
-    send_message("connect");
-    delay(1000);
   }
-
-  Serial.println(" ");
-
 }
+
+
+
 
 void loop()
 {
@@ -55,6 +62,7 @@ void loop()
   if (!client.connected()) {
     connect();
   }
+
   // Watch ------------------------------------------------------------------------
   lv_task_handler();
   if (Serial.available() > 0) {
@@ -91,13 +99,13 @@ void loop()
       chooseTeam();
     case '5':
       nieuwSpel();
-      charPage='0';
+      charPage = '0';
       Serial.println("hello");
       break;
   }
 
 
-    delay(100);
+  delay(100);
 }
 // send message----------------------------------------------------------------------------------
 void send_message(String msg) {
@@ -125,7 +133,7 @@ void connect() {
 }
 // Receive ---------------------------------------------------------------------------------------
 
-void messageReceived(String &topic, String &payload) {
+void messageReceived(String & topic, String & payload) {
   Serial.println("incoming: " + topic + " - " + payload);
   incomingString = payload;
   // Note: Do not use the client in the callback to publish, subscribe or
@@ -140,13 +148,13 @@ void chooseTeam() {
   whiteScreen();
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
   lv_label_set_text(text, "Selecteer het team dat start");
-  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -60);
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -90);
 
   //btn 1
   lv_obj_t *label;
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
-  lv_obj_set_event_cb(btn1, teamBlauw);
-  lv_obj_align(btn1, NULL,    LV_ALIGN_IN_LEFT_MID  , 0, 20);
+  lv_obj_set_event_cb(btn1, teamRood);
+  lv_obj_align(btn1, NULL, LV_ALIGN_IN_TOP_LEFT , 0, 60);
   //label btn1
   label = lv_label_create(btn1, NULL);
   lv_label_set_text(label, "TEAM ROOD");
@@ -157,7 +165,7 @@ void chooseTeam() {
   lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_color_t light_blue = lv_color_hex(0x1E1EFE);
   lv_color_t dark_blue = lv_color_hex(0x00007A);
-  lv_obj_set_size(btn1, 122, 122);
+  lv_obj_set_size(btn1, 120, 190);
   lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 0);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_RED);
@@ -167,15 +175,15 @@ void chooseTeam() {
 
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
-  lv_obj_set_event_cb(btn2, teamRood);
-  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_RIGHT_MID , 12, 20);
+  lv_obj_set_event_cb(btn2, teamBlauw);
+  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_TOP_RIGHT , 10, 60);
   //label btn2
   label = lv_label_create(btn2, NULL);
   lv_label_set_text(label, "TEAM BLAUW");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn2
-  lv_obj_set_size(btn2, 122, 122);
+  lv_obj_set_size(btn2, 120, 190);
   lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 0);
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
@@ -185,7 +193,7 @@ void chooseTeam() {
 void nieuwSpel() {
   whiteScreen();
   lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
-  lv_label_set_text(text, "Het spel is beeindigd");
+  lv_label_set_text(text, "Het spel is gedaan");
   lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -60);
 
   lv_obj_t *label;
@@ -233,23 +241,27 @@ void titleStyle() {
 
 void gameStyle() {
   whiteScreen();
+
+  lv_obj_t *text = lv_label_create(lv_scr_act(), NULL);
+  lv_label_set_text(text, "Punt voor:");
+  lv_obj_align(text, NULL, LV_ALIGN_CENTER, 0, -90);
   lv_obj_t *label;
   //btn 1
   lv_obj_t *btn1 = lv_btn_create(lv_scr_act(), NULL);
-  lv_obj_set_event_cb(btn1, event_handlerBLAUW);
-  lv_obj_align(btn1, NULL,  LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  lv_obj_set_event_cb(btn1, event_handlerROOD);
+  lv_obj_align(btn1, NULL,  LV_ALIGN_IN_TOP_LEFT, 0, 60);
   //label btn1
   label = lv_label_create(btn1, NULL);
-  lv_label_set_text(label, "TEAM ROOD");
+  lv_label_set_text(label, "TEAM 1");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn1
-  
+
   lv_color_t light_red = lv_color_hex(0xFE1E1E);
   lv_color_t dark_red = lv_color_hex(0x7A0000);
   lv_color_t light_blue = lv_color_hex(0x1E1EFE);
   lv_color_t dark_blue = lv_color_hex(0x00007A);
-  lv_obj_set_size(btn1, 120, 250);
+  lv_obj_set_size(btn1, 120, 190);
   lv_obj_set_style_local_radius(btn1, 0, LV_STATE_DEFAULT, 1);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_DEFAULT, LV_COLOR_RED);
   lv_obj_set_style_local_border_color(btn1, 0, LV_STATE_PRESSED, LV_COLOR_RED);
@@ -259,17 +271,17 @@ void gameStyle() {
 
   // btn2
   lv_obj_t *btn2 = lv_btn_create(lv_scr_act(), NULL);
-  lv_obj_set_event_cb(btn2, event_handlerROOD);
-  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_TOP_RIGHT, 10, 0);
+  lv_obj_set_event_cb(btn2, event_handlerBLAUW);
+  lv_obj_align(btn2, NULL,  LV_ALIGN_IN_TOP_RIGHT, 10, 60);
   //label btn2
   label = lv_label_create(btn2, NULL);
-  lv_label_set_text(label, "TEAM BLAUW");
+  lv_label_set_text(label, "TEAM 2");
   lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
 
   //style btn2
-  lv_obj_set_size(btn2, 120, 250);
+  lv_obj_set_size(btn2, 120, 190);
   lv_obj_set_style_local_radius(btn2, 0, LV_STATE_DEFAULT, 1);
-  
+
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_DEFAULT, LV_COLOR_BLUE);
   lv_obj_set_style_local_border_color(btn2, 0, LV_STATE_PRESSED, LV_COLOR_BLUE);
   lv_obj_set_style_local_bg_color(btn2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE);
@@ -330,9 +342,6 @@ void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
     printf("PUNT ROOD\n");
     ttgo->motor->onec();
     delay(100);
-    teamrood += 1;
-    Serial.print("punten rood ");
-    Serial.println(teamrood);
     i = 0;
     send_message("puntrood");
   }
@@ -341,9 +350,6 @@ void event_handlerROOD(lv_obj_t *obj, lv_event_t event)
     ttgo->motor->onec();
     delay(300);
     ttgo->motor->onec();
-    teamrood -= 1;
-    Serial.print("punten rood ");
-    Serial.println(teamrood);
     i = 0;
     send_message("minpunt");
   }
@@ -357,9 +363,6 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
     printf("PUNT BLAUW\n");
     ttgo->motor->onec();
     delay(100);
-    teamblauw += 1;
-    Serial.print("punten blauw ");
-    Serial.println(teamblauw);
     i = 0;
     send_message("puntblauw");
   }
@@ -367,10 +370,7 @@ void event_handlerBLAUW(lv_obj_t *obj, lv_event_t event)
     Serial.println("MINPUT BLAUW");
     ttgo->motor->onec();
     delay(300);
-    ttgo->motor->onec();;
-    teamblauw -= 1;
-    Serial.print("punten blauw ");
-    Serial.println(teamblauw);
+    ttgo->motor->onec();
     i = 0;
     send_message("minpunt");
   }
