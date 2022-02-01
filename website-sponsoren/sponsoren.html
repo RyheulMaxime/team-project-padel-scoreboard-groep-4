@@ -1,0 +1,168 @@
+<!-- https://i-converter.com/files/png-to-url 
+https://imgbb.com/ -->
+
+<!doctype html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padel Sponsoren</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="./img/favicon/vs.ico" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/screen.css" />
+        <!-- <script src="./script/src/paho-mqtt.js"></script> -->
+    <script src="script/datahandler.js"></script>
+    <script src="./script/app.js"></script>
+</head>
+<body class="js-doc">
+    <div class="c-topbar">
+        <span class="c-topbar--title">Sponsoren</span>
+    </div>
+    <div class="c-inloggen js-login">
+        <form class="c-inloggen-login">
+            <p class="c-inloggen-melding">incorrect club ID</p>
+            <label for="id" class="c-inloggen-login-lable">Club ID:</label>
+            <input type="text" id="id" name="id" class="c-inloggen-login-input js-input-login" placeholder="Heef club ID hier in">
+            <button class="c-inloggen-login-button js-login-button" type="button">Login</button>
+        </form>
+        <div class="c-inloggen-achtergrond">
+        </div>
+    </div>
+    <div class="c-eigenaar js-eigenaar">
+        <div class="c-eigenaar-overvieuw">
+            <div class="c-eigenaar-overvieuw-logo">
+                <img class="c-logo js-logo-eigenaar" src="https://cdn.discordapp.com/attachments/936640534288666666/936640681512951869/Image_1.png" alt="logo padel club">
+            </div>
+            <p class="c-eigenaar-overvieuw-naam">
+                Padel club
+            </p>
+            <div class="c-eigenaar-overvieuw-aanpassen">
+                <button class="c-eigenaar-overvieuw-aanpassen-button js-update-eigenaar">
+                    AANPASSEN
+                </button>
+            </div>
+        </div>
+        <form class="c-eigenaar-info">
+            <label class="c-eigenaar-info-naam" for="naam">Naam:</label>
+            <input class="c-eigenaar-info-naam__input js-voorbeeld-naam-eigenaar" type="text" id="naam" name="naam">
+            <label class="c-eigenaar-info-email" for="email">Email:</label>
+            <input class="c-eigenaar-info-email__input" type="email" id="email" name="email">
+            <label class="c-eigenaar-info-link" for="link">Link Logo:</label>
+            <input class="c-eigenaar-info-link__input js-voorbeeld-link-eigenaar" type="text" id="link" name="link">
+            <p class="c-eigenaar-info-voorbeeld">Voorbeeld:</p>
+            <div class="c-eigenaar-info-voorbeeld__logo js-voorbeeld-eigenaar">
+                <img class="c-logo" src="https://1757140519.rsc.cdn77.org/nl/blog/wp-content/uploads/sites/13/2020/01/Adidas-Logo-old-1-1024x576.jpg" alt="adidas">
+            </div>
+            <button class="c-eigenaar-info-annuleren js-annuleren-eigenaar" type="button">
+                ANNULEREN
+            </button>
+            <button class="c-eigenaar-info-toepassen">
+                TOEPASSEN
+            </button>
+        </form> 
+    </div>
+    <div class="c-content">
+        <div class="c-grid js-sponsoren">
+            <div class="c-sponsor c-sponsor-sposor1 js-sponsor-1">
+				<div class="sponsor-overvieuw-toevoegen">
+                    <p class="c-sponsor-overvieuw-toevoegen-text">Nieuwe Sponsor toevoegen</p>
+                    <button class="c-sponsor-overvieuw-toevoegen-button js-update-4">
+                        TOEVOEGEN
+                    </button>
+				</div>
+                <form class="c-sponsor-info">
+                    <label class="c-sponsor-info-naam" for="naam1">Naam:</label>
+                    <input class="c-sponsor-info-naam__input js-voorbeeld-naam-4" type="text" id="naam1" name="naam1">
+                    <label class="c-sponsor-info-link" for="link1">Link Foto:</label>
+                    <input class="c-sponsor-info-link__input js-voorbeeld-link-4" type="text" id="link1" name="link1">
+                    <p class="c-sponsor-info-voorbeeld">Voorbeeld:</p>
+                    <div class="c-sponsor-info-voorbeeld__logo js-voorbeeld-4">
+                        <img class="c-logo" src="https://1757140519.rsc.cdn77.org/nl/blog/wp-content/uploads/sites/13/2020/01/Adidas-Logo-old-1-1024x576.jpg" alt="voorbeeld adidas" width="80%">
+                    </div>
+                    <button class="c-sponsor-info-annuleren js-annuleren-4" type="button">
+                        ANNULEREN
+                    </button>
+                    <button class="c-sponsor-info-toepassen">
+                        TOEPASSEN
+                    </button>
+                </form>
+            </div>
+            <div class="c-sponsor c-sponsor-sposor2 js-sponsor-2">    
+                <div class="sponsor-overvieuw-toevoegen">
+                    <p class="c-sponsor-overvieuw-toevoegen-text">Nieuwe Sponsor toevoegen</p>
+                    <button class="c-sponsor-overvieuw-toevoegen-button js-update-4">
+                        TOEVOEGEN
+                    </button>
+				</div>
+                <form class="c-sponsor-info">
+                    <label class="c-sponsor-info-naam" for="naam1">Naam:</label>
+                    <input class="c-sponsor-info-naam__input js-voorbeeld-naam-4" type="text" id="naam1" name="naam1">
+                    <label class="c-sponsor-info-link" for="link1">Link Foto:</label>
+                    <input class="c-sponsor-info-link__input js-voorbeeld-link-4" type="text" id="link1" name="link1">
+                    <p class="c-sponsor-info-voorbeeld">Voorbeeld:</p>
+                    <div class="c-sponsor-info-voorbeeld__logo js-voorbeeld-4">
+                        <img class="c-logo" src="https://1757140519.rsc.cdn77.org/nl/blog/wp-content/uploads/sites/13/2020/01/Adidas-Logo-old-1-1024x576.jpg" alt="voorbeeld adidas" width="80%">
+                    </div>
+                    <button class="c-sponsor-info-annuleren js-annuleren-4" type="button">
+                        ANNULEREN
+                    </button>
+                    <button class="c-sponsor-info-toepassen">
+                        TOEPASSEN
+                    </button>
+                </form>
+            </div>
+            <div class="c-sponsor c-sponsor-sposor3 js-sponsor-3">    
+                <div class="sponsor-overvieuw-toevoegen">
+                    <p class="c-sponsor-overvieuw-toevoegen-text">Nieuwe Sponsor toevoegen</p>
+                    <button class="c-sponsor-overvieuw-toevoegen-button js-update-4">
+                        TOEVOEGEN
+                    </button>
+				</div>
+                <form class="c-sponsor-info">
+                    <label class="c-sponsor-info-naam" for="naam1">Naam:</label>
+                    <input class="c-sponsor-info-naam__input js-voorbeeld-naam-4" type="text" id="naam1" name="naam1">
+                    <label class="c-sponsor-info-link" for="link1">Link Foto:</label>
+                    <input class="c-sponsor-info-link__input js-voorbeeld-link-4" type="text" id="link1" name="link1">
+                    <p class="c-sponsor-info-voorbeeld">Voorbeeld:</p>
+                    <div class="c-sponsor-info-voorbeeld__logo js-voorbeeld-4">
+                        <img class="c-logo" src="https://1757140519.rsc.cdn77.org/nl/blog/wp-content/uploads/sites/13/2020/01/Adidas-Logo-old-1-1024x576.jpg" alt="voorbeeld adidas" width="80%">
+                    </div>
+                    <button class="c-sponsor-info-annuleren js-annuleren-4" type="button">
+                        ANNULEREN
+                    </button>
+                    <button class="c-sponsor-info-toepassen">
+                        TOEPASSEN
+                    </button>
+                </form>
+            </div>
+            <div class="c-sponsor c-sponsor-sposor4 js-sponsor-4">    
+                <div class="sponsor-overvieuw-toevoegen">
+                    <p class="c-sponsor-overvieuw-toevoegen-text">Nieuwe Sponsor toevoegen</p>
+                    <button class="c-sponsor-overvieuw-toevoegen-button js-update-4">
+                        TOEVOEGEN
+                    </button>
+				</div>
+                <form class="c-sponsor-info">
+                    <label class="c-sponsor-info-naam" for="naam1">Naam:</label>
+                    <input class="c-sponsor-info-naam__input js-voorbeeld-naam-4" type="text" id="naam1" name="naam1">
+                    <label class="c-sponsor-info-link" for="link1">Link Foto:</label>
+                    <input class="c-sponsor-info-link__input js-voorbeeld-link-4" type="text" id="link1" name="link1">
+                    <p class="c-sponsor-info-voorbeeld">Voorbeeld:</p>
+                    <div class="c-sponsor-info-voorbeeld__logo js-voorbeeld-4">
+                        <img class="c-logo" src="https://1757140519.rsc.cdn77.org/nl/blog/wp-content/uploads/sites/13/2020/01/Adidas-Logo-old-1-1024x576.jpg" alt="voorbeeld adidas" width="80%">
+                    </div>
+                    <button class="c-sponsor-info-annuleren js-annuleren-4" type="button">
+                        ANNULEREN
+                    </button>
+                    <button class="c-sponsor-info-toepassen">
+                        TOEPASSEN
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+      
+</body>
+</html>
