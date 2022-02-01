@@ -1,0 +1,1061 @@
+/*------------------------------------*\
+#FONTS
+\*------------------------------------*/
+
+@font-face {
+    font-family: "Segoe UI";
+    font-weight: 400;
+    src: url("../fonts/SegoeUI.woff2") format("woff2");
+    src: url("../fonts/SegoeUI.woff") format("woff")
+}
+
+@font-face {
+    font-family: "Segoe UI";
+    font-weight: 600;
+    src: url("../fonts/SegoeUI-Bold.woff2") format("woff2");
+    src: url("../fonts/SegoeUI-Bold.woff") format("woff")
+}
+
+/*------------------------------------*\
+#Variables
+\*------------------------------------*/
+
+:root {
+    /* colors */
+    /* --global-color-alpha:#D4E2FA;
+    --global-color-alpha-dark:#021433; 
+    --global-color-alpha-light:#F0F4FC; 
+    --global-color-alpha-light-border:#BAD0F7;  */
+
+    --global-color-alpha:#DA1212;
+    --global-color-beta:#11468F;
+
+    --global-font-color: #fff;
+    
+    --global-font-color-beta: #3B3B3B;
+    
+    --global-border-color: #3B3B3B;
+
+    
+
+    --color-back: #fff;
+
+    /* --global-color-box-shadow: #0A2B66; */
+
+
+
+    /* Global colors index.html */
+    --global-color-back: #f4ebde;
+    --global-color-front: white;
+  
+
+  
+    --global-color-neutral-xxx-light: #f4ebde;
+    --global-color-neutral-xx-light: #f4e2c6;
+    --global-color-neutral-x-light: #f4d8ad;
+    --global-color-neutral-light: #f4ce92;
+    --global-color-neutral: #f4c47a;
+    --global-color-neutral-dark: #f4bb62;
+    --global-color-neutral-x-dark: #dba858;
+    --global-color-neutral-xx-dark: #c2944e;
+    --global-color-neutral-xxx-dark: #a88143;
+    --global-color-neutral-xxxx-dark: #8f6d39;
+
+    --global-color-blue-xxx-light: #bed7ed;
+    --global-color-blue-xx-light: #91c5f2;
+    --global-color-blue-x-light: #64b4fa;
+    --global-color-blue-light: #33a0ff;
+    --global-color-blue: #0088ff;
+    --global-color-blue-dark: #007ae6;
+    --global-color-blue-x-dark: #006dcc;
+    --global-color-blue-xx-dark: #005fb3;
+    --global-color-blue-xxx-dark: #005299;
+
+    --global-color-black-xxx-light: #f0f5fa;
+    --global-color-black-xx-light: #cdd3d9;
+    --global-color-black-x-light: #aaafb3;
+    --global-color-black-light: #919699;
+    --global-color-black: #737a80;
+    --global-color-black-dark: #5c6266;
+    --global-color-black-x-dark: #45494d;
+    --global-color-black-xx-dark: #2e3133;
+    --global-color-black-xxx-dark: #17181a;
+  
+
+
+    /* global page settings */
+    --global-html-color: var(--global-color-front);
+    --global-html-backgroundColor: var(--global-color-back);
+    --global-selection-backgroundColor: var(--global-color-front);
+  
+
+    /* Baseline settings */
+    --global-baseline: 8px;
+    --global-whitespace: calc(var(--global-baseline) * 3); /* = 24px */
+  
+    --global-whitespace-xs: calc(var(--global-baseline) / 2); /* = 4px */
+    --global-whitespace-sm: calc(var(--global-baseline) * 1); /*  = 8px */
+    --global-whitespace-md: calc(var(--global-baseline) * 2); /*  = 16px */
+    --global-whitespace-lg: calc(var(--global-baseline) * 4); /*  = 32px */
+    --global-whitespace-xl: calc(var(--global-whitespace) * 2); /*  = 48px */
+    --global-whitespace-xxl: calc(var(--global-whitespace) * 3); /*  = 72px */
+
+    /* Shadows */
+    --global-box-shadow: 0 0 0 3px rgba(84, 0, 0, 0.05), 0 4px 5px rgba(84, 0, 0, 0.4);
+
+}
+
+
+
+/*------------------------------------*\
+#GENERIC
+\*------------------------------------*/
+
+/*
+    Generic: Page
+    ---
+    Global page styles + universal box-sizing:
+*/
+
+html {
+    font-size: 100%;
+    line-height: 1.5;
+    /* font-family: Helvetica, arial, sans-serif; */
+    font-family: "Segoe UI", Helvetica;
+    /* font-family: "Work sans Web", Helvetica; */
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-front);
+    background-color: var(--color-back);
+    font-feature-settings: "zero" 1;
+    height: 100%;
+}
+
+
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/*
+* Remove text-shadow in selection highlight:
+* https://twitter.com/miketaylr/status/12228805301
+*
+* Customize the background color to match your design.
+*/
+
+::-moz-selection {
+    background: yellow;
+    color: white;
+    text-shadow: none;
+}
+
+::selection {
+    background: yellow;
+    color: var(--global-font-color-beta);
+    text-shadow: none;
+}
+
+/*------------------------------------*\
+#Elements
+\*------------------------------------*/
+
+/*
+Elements: Images
+---
+Default markup for images to make them responsive
+*/
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+/*
+    Elements: typography
+    ---
+    Default markup for typographic elements
+*/
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.25rem;
+    line-height: 3rem;
+    margin: 0 0 24px;
+}
+
+h2 {
+    font-size: 32px;
+    line-height: 40px;
+    margin: 0 0 24px;
+}
+
+h3 {
+    font-size: 26px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+h4,
+h5,
+h6 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    margin: 0 0 24px;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+    margin: 0 0 24px;
+    
+}
+
+ul,
+ol {
+    padding-left: 24px;
+}
+
+li ul,
+li ol {
+    margin-bottom: 0;
+}
+
+blockquote {
+    font-style: normal;
+    font-size: 23px;
+    line-height: 32px;
+    margin: 0 0 24px;
+}
+
+blockquote * {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+figcaption {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 8px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: LightGrey;
+    margin: 0 0 24px;
+}
+
+a {
+    color: yellow;
+    outline-color: yellow;
+    outline-width: medium;
+    outline-offset: 2px;
+}
+
+a:visited,
+a:active {
+    color: yellow;
+}
+
+a:hover,
+a:focus {
+    color: yellow;
+}
+
+label,
+input {
+    display: block;
+}
+
+select {
+    width: 100%;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+/*------------------------------------*\
+#OBJECTS
+\*------------------------------------*/
+
+/*
+    Objects: List
+    ---
+    Small reusable object to remove default list styling from lists
+*/
+
+.o-list {
+    list-style: none;
+    padding: 0;
+}
+.o-list-type {
+    list-style: none;
+    padding: 0;
+}
+.o-text{
+    margin-top: var(--global-baseline);
+}
+
+@media (min-width: 550px) {
+    .o-text{
+        max-width: 500px;
+    }
+}
+.c-list {
+    display: flex;
+}
+
+/*
+    Object: Button reset
+    ---
+    Small button reset object
+*/
+
+.o-button-reset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+
+    /* inherit font & color from ancestor */
+    color: inherit;
+    font: inherit;
+
+    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+    line-height: normal;
+
+    /* Corrects font smoothing for webkit */
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+
+    /* Corrects inability to style clickable `input` types in iOS */
+    -webkit-appearance: none;
+}
+
+/*
+    Object: Hide accessible
+    ---
+    Accessibly hide any element
+*/
+
+.o-hide-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/*------------------------------------*\
+#COMPONENTS
+\*------------------------------------*/
+
+/*
+    Component: scoreboard
+    ---
+    Website main scoreboard
+*/
+
+.c-scoreboard{
+    width: 100%;
+    height: 100vh;
+    /* padding-bottom: 1.5rem; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 9fr 3fr;
+}
+
+.c-scoreboard-blue{
+    padding: 2rem;
+    display: grid;
+    /* gap: 1.5rem; */
+    background-color: var(--global-color-beta);
+    align-content: center;
+    justify-content: center;
+    /* grid-template-rows: repeat(3, 1fr); */
+    grid-template-rows: 3fr 4fr;
+}
+
+.c-scoreboard-red{
+    display: grid;
+    padding: 2rem;
+    /* gap: 1.5rem; */
+    background-color: var(--global-color-alpha);
+    grid-template-rows: 3fr 4fr;
+    justify-content: center;
+}
+
+.c-scoreboard-red-points{
+    font-size: 14rem;
+    font-weight: 600;
+    color: var(--global-font-color);
+    justify-self: center;
+}
+
+.c-scoreboard-blue-points{
+    font-size: 14rem;
+    font-weight: 600;
+    color: var(--global-font-color);
+    justify-self: center;
+}
+
+.c-scoreboard-red-team{
+    color: var(--global-font-color);
+    justify-self: center;
+    /* font-size: 70px; */
+    font-size: 5rem;
+}
+
+.c-scoreboard-blue-team{
+    color: var(--global-font-color);
+    justify-self: center;
+    font-size: 5rem;
+}
+
+.c-scoreboard-red-serve{
+    color: var(--global-font-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-scoreboard-blue-serve{
+    color: var(--global-font-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.c-scoreboard-serve-active{
+    height: 1rem;
+    width: 100%;
+    background-color: var(--global-font-color);
+}
+
+.c-scoreboard-serve-left{
+    display: none;
+}
+
+.c-scoreboard-serve-right{
+    display: block;
+}
+
+.is-left  .c-scoreboard-serve-left{
+    display: block;
+}
+
+.is-left  .c-scoreboard-serve-right{
+    display: none;
+}
+
+.is-team-2 .c-scoreboard-red-serve{
+    display: none;
+}
+
+.is-team-2 .c-scoreboard-blue-serve{
+    display: flex;
+}
+
+.is-done .c-scoreboard-red-serve{
+    display: none;
+}
+
+.is-done .c-scoreboard-blue-serve{
+    display: none;
+}
+.opslag-is-none .c-scoreboard-red-serve{
+    display: none;
+}
+
+.opslag-is-none .c-scoreboard-blue-serve{
+    display: none;
+}
+.c-scoreboard-team-naam{
+    display: flex;
+    /* flex-direction: column; */
+}
+
+.c-scoreboard-naam{
+    /* font-size: 70px; */
+    font-size: 4.25rem;
+    align-self: center;
+    margin: 0;
+}
+
+/*
+    Component: extras
+    ---
+    extra info on scoreboard
+*/
+
+.c-extras{
+    grid-column: span 2 ;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.c-extras-set{
+    display: grid;
+    /* align-items: center; */
+    justify-content: center;
+    grid-template-rows: auto 1fr ;
+}
+
+.c-extras-text{
+    margin: 0;
+    margin-top: 8px;
+    justify-self: center;
+    font-size: 4rem;
+    font-weight: 600;
+    color: var(--global-font-color-beta);
+}
+
+.c-extras-text-game{
+    grid-row: span 2;
+    margin: 0;
+    justify-self: center;
+    align-self: center;
+    font-size: 4rem;
+    font-weight: 600;
+    color: var(--global-font-color-beta);
+}
+
+.c-extras-text-tiebrake{
+    margin: 0;
+    justify-self: center;
+    align-items: flex-start;
+    opacity: 0;
+    font-size: 3.5rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    color: var(--global-font-color-beta);
+}
+
+.tiebreak .c-extras-text-tiebrake{
+    opacity: 1;
+    
+}
+
+.c-extras-set_red{
+    margin: 0;
+    justify-self: center;
+    color: var(--global-color-alpha);
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.c-extras-set_blue{
+    margin: 0;
+    justify-self: center;
+    color: var(--global-color-beta);
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.c-extras-games{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 12rem;
+    padding-right: 12rem;
+    border-left: 4px solid var(--global-border-color);
+    border-right: 4px solid var(--global-border-color);
+}
+
+.c-extras-games-mid{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    height: 100%;
+}
+
+.c-extras-games-red{
+    margin: 0;
+    justify-self: center;
+    color: var(--global-color-alpha);
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.c-extras-games-blue{
+    margin: 0;
+    justify-self: center;
+    color: var(--global-color-beta);
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.is-done .c-extras{
+    display: none;
+}
+
+/*
+    Component: info
+    ---
+    Show extra info
+*/
+
+.c-info{
+    grid-column: span 2 ;
+    display: none;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 3fr;
+}
+
+.c-info-winner{
+    grid-column: span 2;
+    justify-self: center;
+    color: var(--global-font-color-beta);
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.c-info-winner-red{
+    grid-column: span 2;
+    justify-self: center;
+    color: var(--global-color-alpha);
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.c-info-winner-blue{
+    grid-column: span 2;
+    justify-self: center;
+    color: var(--global-color-beta);
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.c-info-sponsor{
+    margin:1rem;
+    padding: 0.5rem;
+    border:4px solid var(--global-border-color) ;
+    display: flex;
+    /* grid-template-columns: repeat(4,1fr); /
+    align-items: center;
+    / justify-items: center; */
+    justify-content: center;
+    gap: 2rem;
+}
+
+.c-info-logo{
+    justify-self: center;
+    align-self: center;
+    padding: 1rem;
+}
+.c-sponsor{
+    max-width: 23%;
+    max-height: 100%;
+}
+
+.is-done .c-info{
+    display: grid;
+}
+
+/* 
+    Component: button
+        ---
+    Everything button related here 
+*/
+
+.c-button-style{
+    border: 1px solid var(--global-color-neutral-xxxx-dark);
+    width: 150px;
+    height: 40px;
+    /* border-radius: 5px; */
+    background-color: var(--global-color-neutral-xx-light);
+    color: var(--global-color-neutral-xxxx-dark);
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.c-button-style:hover,
+.c-button-style:focus{
+    box-shadow: 0px 0px 6px var(--global-color-neutral-xxxx-dark);
+}
+
+.c-button-style:active{
+    border: 2px solid var(--global-color-neutral-xxx-dark);
+}
+
+.c-button{
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+.c-content{
+    padding: 16px;
+}
+
+/* 
+    Component: Forms
+        ---
+    Everything form related here 
+*/
+
+
+.c-form-field {
+    position: relative;
+}
+      
+.c-input {
+    --input-transition: all var(--global-transitionDuration-alpha) var(--global-transitionEasing-out);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100px;
+    border: none;
+    /* border-radius: var(--input-borderRadius, var(--global-borderRadius)); */
+    border-bottom: 1px solid var(--global-color-neutral-xxxx-dark);
+    background-color:var(--global-color-neutral-light );
+    /* font-family: inherit; */
+    font-size: 1.5rem;
+    line-height: calc(var(--global-baseline) * 3);
+    padding: calc(var(--global-baseline) * 1.5 - var(--global-borderWidth)) var(--global-whitespace-md);
+    outline: none;
+    transition: var(--input-transition);
+    padding-top: 20px;
+}
+.c-team-naam{
+    display: inline;
+    margin: 0.5rem;
+    /* margin-top: 20px; */
+}
+.c-team-en{
+    font-size: 1.75rem;
+    /* margin: 0.5rem;   */
+    
+    margin-top: 20px;
+    padding: 0 16px 0 16px ;
+}
+.c-team-namen{
+
+    display: flex;
+    justify-content: center;
+
+    /* padding-top: 16px; */
+    width: 100%;
+    margin-bottom: 60px;
+}  
+.c-racket{
+    display: flex;
+    margin: 0 auto;
+    width: 200px;
+}
+.c-racket-svg{
+    width: 100%;
+}
+.c-body {
+    /* --c-app__topbar-height: calc(var(--global-baseline) * 14); */
+    /* width: 100vh; */
+    min-height: 100vh;
+    background-color: var(--global-color-neutral-xxx-light);
+    }
+
+.c-topbar{
+    display: flex;
+    background-color: var(--global-color-neutral-dark);
+    justify-content: center;   
+    max-width: 2500px;  
+    /* width: 100vh; */
+}
+.c-topbar--title{
+    font-size: 1.75rem;
+    color: var(--global-color-black-xxx-dark);
+}
+/* 
+.c-team-rood{
+    display: flex;
+    background-color:var(--global-color-neutral-light );
+    margin-top: 10px;
+    width: 500px;
+    height:500px ;
+}  */
+.c-team{
+    /* grid-column: 3; */
+    display: block;
+    background-color:var(--global-color-neutral-light );
+    min-width: 300px;
+    min-height:300px ;
+}
+    
+
+.c-vs-text{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    font-size: 2.75rem;
+    color: var(--global-color-neutral-xxxx-dark) ;
+    padding-bottom: 8px;
+}
+.c-grid{
+    margin-top: 32px;
+    grid-template-rows: auto 66px auto;
+/* grid-template-columns: 50px 50px 50px; 190 */
+/* grid-gap: var(--global-whitespace-lg); */
+display: grid;
+justify-content: space-evenly; 
+}
+@media (min-width:865px){ 
+.c-button-style{
+    width: 175px;
+    height: 50px;
+    font-size: 1.75rem;
+}
+
+.c-button{
+    margin-top: 0px;
+}
+.c-team-naam{
+    margin-top: 30px;
+}
+.c-team-namen{
+    margin-bottom: 50px;
+} 
+.c-team-en{
+    font-size: 32px;
+}
+.c-grid{
+    grid-template-columns: auto 50px auto; /*190*/
+}
+.c-team{
+    /* grid-column: 3; */
+    background-color:var(--global-color-neutral-light );
+    margin-top: 10px;
+    max-width: 750px;
+    max-height:750px;
+}
+.c-racket{
+    max-width: 900px;
+}.c-input {
+    width: 90px;
+    font-size: 1.5rem;
+    padding-top: 0;
+}
+.c-vs-text{
+    align-self: center;
+}
+}
+@media (min-width:1600px){
+.c-button-style{
+    width: 200px;
+    height: 60px;
+    font-size: 2rem;
+}
+.c-button{
+    margin-top: 0px;
+}
+    .c-team{
+        width: 700px;
+        height:700px;
+    }  
+    .c-racket{
+        width: 600px;
+    }
+    .c-input{
+        width: 200px;
+    }
+    .c-team-namen{
+        margin-top: 50px;
+        margin-bottom: 150px;
+    } 
+    .c-team-en{
+        font-size: 3rem;
+    }
+    .c-team-naam{
+        margin-top: 50px;
+    } .c-input {
+        width: 180px;
+        font-size: 1.5rem;
+        padding: 0;
+    }
+
+}
+@media (min-width:1920px){ 
+.c-button-style{
+    width: 225px;
+    height: 70px;
+    font-size: 2.25rem;
+}
+.c-button{
+    margin-top: 0px;
+}
+    .c-team-naam{
+        /* margin-top: 10px; */
+    }
+    .c-team-namen{
+        margin-bottom: 150px;
+    } 
+    .c-team-en{
+        display: flex;
+        align-self: flex-end;
+        font-size: 3rem;
+    }
+    .c-grid{
+grid-template-columns: auto 50px auto; /*190*/
+    }
+    .c-team{
+        /* grid-column: 3; */
+        background-color:var(--global-color-neutral-light );
+        margin-top: 10px;
+        width: 700px;
+        height:700px;
+    }
+    .c-racket{
+    width: 600px;
+    }.c-input {
+        width: 180px;
+        font-size: 2.5rem;
+        height: 50px;
+    }
+    .c-vs-text{
+        align-self: center;
+    }
+}
+
+/*------------------------------------*\
+    #UTILITIES
+    \*------------------------------------*/
+.u-muted {
+    display: none;
+}
+.u-text-align_center {
+    display: block;
+    text-align: center;
+}
+.u-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+.u-text__sm{
+    font-weight: 400;
+    font-size: 0.6rem;
+    padding: 0;
+    margin: 0;
+    color: var(--global-color-neutral-dark);
+}
+.u-text__lg{
+    font-weight: 600;
+    color: var(--global-color-red-neutral);
+}
+
+/*------------------------------------*\
+#UTILITIES
+\*------------------------------------*/
+
+
+
+/*------------------------------------*\
+#STATES
+\*------------------------------------*/
+
+/*
+    Change the theme using CSS vars.
+*/
+
+/* Night version: just switch the light and dark vars */
+
+/*------------------------------------*\
+#MEDIA
+\*------------------------------------*/
+
+/*
+    Print styles.
+    ---
+    Inlined to avoid the additional HTTP request:
+    http://www.phpied.com/delay-loading-your-print-css/
+*/
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        /* Black prints faster:
+        http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    /*
+    * Don't show links that are fragment identifiers,
+    * or use the `javascript:` pseudo protocol
+    */
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
+    * Printing Tables:
+    * http://css-discuss.incutio.com/wiki/Printing_Tables
+    */
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+
+.is-night {
+    --color-front: var(--color-light);
+    --color-back: var(--color-dark);
+    --color-sun: var(--color-light);
+ }
