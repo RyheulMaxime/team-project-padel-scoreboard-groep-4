@@ -199,7 +199,8 @@ namespace PadelScoreboard
         }
 
         [FunctionName("DeleteSponsor")]
-        public async Task<IActionResult> DeleteSponsor([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "sponsor/{sponsorId}")] HttpRequest req,
+        public async Task<IActionResult> DeleteSponsor([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "sponsor/{sponsorId}/{clubId}")] HttpRequest req,
+            string clubId,
             string sponsorId,
             ILogger log)
         {
@@ -208,7 +209,7 @@ namespace PadelScoreboard
                 CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB"));
                 var container = client.GetContainer("Padel", "sponsors");
 
-                await container.DeleteItemAsync<Task>(sponsorId, new PartitionKey(sponsorId)); 
+                await container.DeleteItemAsync<Task>(sponsorId, new PartitionKey(clubId)); 
 
                 return new OkObjectResult("verwijdered");
             }
